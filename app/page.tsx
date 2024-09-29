@@ -1,19 +1,74 @@
 "use client";
 
 import { Upload } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Login from "./components/login";
 import Signup from "./components/signup";
+import FileInfo from "./components/file-info";
+import { TypeAnimation } from "react-type-animation";
 
 export default function Home() {
   const [modal, setModal] = useState("");
+  const [isDragging, setIsDragging] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+  const dragCounter = useRef(0); // Track drag depth
 
-  const modals: {
-    [key: string]: JSX.Element;
-  } = {
+  const modals: { [key: string]: JSX.Element } = {
     login: <Login />,
     signup: <Signup />,
+    "file-info": <FileInfo file={file} />,
   };
+
+  useEffect(() => {
+    const handleDragEnter = (e: DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dragCounter.current += 1;
+      if (dragCounter.current === 1) {
+        setIsDragging(true);
+      }
+    };
+
+    const handleDragOver = (e: DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+    };
+
+    const handleDragLeave = (e: DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dragCounter.current -= 1;
+      if (dragCounter.current === 0) {
+        setIsDragging(false);
+      }
+    };
+
+    const handleDrop = (e: DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsDragging(false);
+      dragCounter.current = 0;
+
+      const file = e.dataTransfer?.files?.[0];
+      if (file) {
+        setFile(file);
+        setModal("file-info");
+      }
+    };
+
+    window.addEventListener("dragenter", handleDragEnter);
+    window.addEventListener("dragover", handleDragOver);
+    window.addEventListener("dragleave", handleDragLeave);
+    window.addEventListener("drop", handleDrop);
+
+    return () => {
+      window.removeEventListener("dragenter", handleDragEnter);
+      window.removeEventListener("dragover", handleDragOver);
+      window.removeEventListener("dragleave", handleDragLeave);
+      window.removeEventListener("drop", handleDrop);
+    };
+  }, []);
 
   return (
     <div className="relative">
@@ -25,6 +80,11 @@ export default function Home() {
           <div className="" onClick={(e) => e.stopPropagation()}>
             {modals[modal]}
           </div>
+        </div>
+      )}
+      {isDragging && (
+        <div className="absolute right-0 border-[6px] border-white/40 border-dashed p-4 top-0 bg-black/70 backdrop-blur-lg w-full flex items-center justify-center h-screen">
+          <h1 className="text-6xl font-bold">Drop the file anywhere</h1>
         </div>
       )}
       <div className="flex items-center font-medium justify-between p-5 max-w-4xl mx-auto">
@@ -41,7 +101,25 @@ export default function Home() {
       </div>
       <div className="flex mt-24 items-center flex-col max-w-3xl mx-auto">
         <h1 className="text-7xl text-center">
-          Effortless file uploads for everyone
+          <span className="block">
+            Effortless{" "}
+            <TypeAnimation
+              sequence={[
+                "file",
+                500,
+                "image",
+                500,
+                "video",
+                500,
+                "document",
+                500,
+                "file",
+              ]}
+              cursor={false}
+              speed={10}
+            />{" "}
+          </span>
+          uploads for everyone
         </h1>
         <p className="text-xl mt-5 text-center text-[#606060]">
           Drag and drop anywhere to upload a file up to{" "}
@@ -55,7 +133,24 @@ export default function Home() {
           </span>
           . No login required.
         </p>
-        <button className="bg-white text-black px-10 py-4 rounded-full font-semibold mt-5 flex items-center gap-x-2">
+
+        <input
+          type="file"
+          className="hidden"
+          ref={fileRef}
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) {
+              setFile(file!);
+              setModal("file-info");
+            }
+          }}
+        />
+
+        <button
+          className="bg-white text-black px-10 py-4 rounded-full font-semibold mt-5 flex items-center gap-x-2"
+          onClick={() => fileRef.current?.click()}
+        >
           <Upload />
           Click to upload.
         </button>
