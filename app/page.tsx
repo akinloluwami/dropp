@@ -1,101 +1,66 @@
-import Image from "next/image";
+"use client";
+
+import { Upload } from "lucide-react";
+import { useState } from "react";
+import Login from "./components/login";
+import Signup from "./components/signup";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [modal, setModal] = useState("");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const modals: {
+    [key: string]: JSX.Element;
+  } = {
+    login: <Login />,
+    signup: <Signup />,
+  };
+
+  return (
+    <div className="relative">
+      {!!modal && (
+        <div
+          className="absolute right-0 top-0 bg-black/10 backdrop-blur-sm w-full flex items-center justify-center h-screen"
+          onClick={() => setModal("")}
+        >
+          <div className="" onClick={(e) => e.stopPropagation()}>
+            {modals[modal]}
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      )}
+      <div className="flex items-center font-medium justify-between p-5 max-w-4xl mx-auto">
+        <p className="font-semibold">Dropp.</p>
+        <div className="flex items-center gap-x-3">
+          <button onClick={() => setModal("login")}>Login</button>
+          <button
+            className="px-4 py-2 rounded-full bg-white text-black"
+            onClick={() => setModal("signup")}
+          >
+            Sign up
+          </button>
+        </div>
+      </div>
+      <div className="flex mt-24 items-center flex-col max-w-3xl mx-auto">
+        <h1 className="text-7xl text-center">
+          Effortless file uploads for everyone
+        </h1>
+        <p className="text-xl mt-5 text-center text-[#606060]">
+          Drag and drop anywhere to upload a file up to{" "}
+          <span
+            className="font-semibold underline cursor-pointer"
+            data-tooltip-content="Up to 150MB if you're logged in"
+            data-tooltip-id="tt"
+            data-tooltip-variant="light"
+          >
+            25MB
+          </span>
+          . No login required.
+        </p>
+        <button className="bg-white text-black px-10 py-4 rounded-full font-semibold mt-5 flex items-center gap-x-2">
+          <Upload />
+          Click to upload.
+        </button>
+        <p className="text-xs italic mt-1">It's free, seriously.</p>
+      </div>
     </div>
   );
 }
