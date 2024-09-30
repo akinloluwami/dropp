@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.56.2",
     "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
     "classnames": "^2.5.1",
