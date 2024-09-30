@@ -10,6 +10,8 @@ import {
 import React, { FC } from "react";
 
 const FileInfo: FC<{ file: File | null }> = ({ file }) => {
+  if (!file) return null;
+
   const types: {
     [key: string]: React.ReactNode;
   } = {
