@@ -7,6 +7,9 @@ import axios from "axios";
 import UserProfile from "./components/user";
 import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
+import { useUserStore } from "@/stores/user";
+import { toast } from "sonner";
+// import { useLogSnag } from "@logsnag/react";
 
 export default function Home() {
   const [modal, setModal] = useState("");
@@ -14,14 +17,19 @@ export default function Home() {
   const [file, setFile] = useState<File | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const dragCounter = useRef(0);
-
+  const { setUser } = useUserStore();
+  // const { setUserId } = useLogSnag();
   const {
     isPending: loadingUser,
     data: user,
     refetch: mutateUser,
   } = useQuery({
     queryKey: ["userProfile"],
-    queryFn: () => axios.get("/api/user").then((res) => res.data),
+    queryFn: () =>
+      axios.get("/api/user").then((res) => {
+        setUser(res.data);
+        return res.data;
+      }),
     retry: 0,
   });
 
@@ -31,6 +39,7 @@ export default function Home() {
         onLoginSuccess={() => {
           setModal("");
           mutateUser();
+          toast.success("Logged in successfully");
         }}
       />
     ),
@@ -39,6 +48,7 @@ export default function Home() {
         onSignupSuccess={() => {
           setModal("");
           mutateUser();
+          toast.success("Signed up successfully");
         }}
       />
     ),
@@ -149,7 +159,7 @@ export default function Home() {
           Drag and drop anywhere to upload a file up to{" "}
           <span
             className="font-semibold underline cursor-pointer"
-            data-tooltip-content="Up to 150MB if you're logged in"
+            data-tooltip-content="Up to 100MB if you're logged in"
             data-tooltip-id="tt"
             data-tooltip-variant="light"
           >
