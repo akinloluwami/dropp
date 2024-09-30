@@ -5,6 +5,7 @@ import { NextApiRequest, NextApiResponse } from "next/types";
 import { hash } from "bcryptjs";
 import { withErrorHandling } from "@/middlewares/error-handling";
 import { setTokenCookie } from "@/helpers/auth/setTokenCookie";
+import { logsnag } from "@/config/logsnag";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { name, email, password, confirmPassword } = req.body;
@@ -41,6 +42,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       error: "Failed to create user",
     });
   }
+
+  await logsnag.identify({
+    user_id: newUser.id,
+    properties: {
+      name: newUser.name!,
+      email: newUser.email!,
+    },
+  });
+
+  await logsnag.track({
+    channel: "users",
+    event: "user-created",
+    description: `New user ${newUser.email}`,
+    icon: "🔥",
+    notify: true,
+    user_id: newUser.id,
+  });
 
   setTokenCookie(req, res, newUser?.id);
 
