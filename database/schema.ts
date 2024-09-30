@@ -1,21 +1,28 @@
-import { numeric, pgTable, text, uuid } from "drizzle-orm/pg-core";
-
-export const files = pgTable("files", {
-  id: text("id").primaryKey(),
-  name: text("name"),
-  type: text("type"),
-  size: numeric("size"),
-  url: text("url"),
-  createdAt: text("created_at"),
-  userId: text("user_id"),
-  extension: text("extension"),
-});
+import { numeric, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name"),
   email: text("email"),
   password: text("password"),
-  createdAt: text("created_at"),
-  updatedAt: text("updated_at"),
+  createdAt: timestamp("created_at", {
+    withTimezone: true,
+  }).defaultNow(),
+  updatedAt: timestamp("updated_at", {
+    withTimezone: true,
+  }).defaultNow(),
+});
+
+export const files = pgTable("files", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  originalName: text("original_name"),
+  generatedName: text("generated_name"),
+  type: text("type"),
+  size: numeric("size"),
+  url: text("url"),
+  extension: text("extension"),
+  userId: text("user_id"),
+  createdAt: timestamp("created_at", {
+    withTimezone: true,
+  }).defaultNow(),
 });
