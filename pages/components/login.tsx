@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import axios from "axios";
-import { LoginFormSchema, LoginFormState } from "../lib/definitions";
+import { LoginFormSchema, LoginFormState } from "../../lib/definitions";
 import { LoaderCircle } from "lucide-react";
 
 const Login: FC<{

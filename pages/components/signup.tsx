@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import axios from "axios";
-import { SignupFormSchema, SignupFormState } from "../lib/definitions";
+import { SignupFormSchema, SignupFormState } from "../../lib/definitions";
 import { LoaderCircle } from "lucide-react";
 
 const fields = [
