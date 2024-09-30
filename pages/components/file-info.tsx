@@ -15,6 +15,7 @@ import React, { FC, useState } from "react";
 import axios from "axios";
 import { useUserStore } from "@/stores/user";
 import { toast } from "sonner";
+import { readableSize, truncateFromEnd } from "@/utils/files";
 
 const FileInfo: FC<{ file: File | null }> = ({ file }) => {
   const [uploading, setUploading] = useState(false);
@@ -33,23 +34,6 @@ const FileInfo: FC<{ file: File | null }> = ({ file }) => {
     video: <FileVideo size={150} />,
     audio: <FileAudio size={150} />,
     default: <FileCheck size={150} />,
-  };
-
-  const readableSize = (size: number) => {
-    const units = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-    let i = 0;
-    while (size >= 1024) {
-      size /= 1024;
-      i++;
-    }
-    return `${size?.toFixed(2)} ${units[i]}`;
-  };
-
-  const truncateFromEnd = (str: string, length: number) => {
-    if (str.length > length) {
-      return `...${str.substring(str.length - length)}`;
-    }
-    return str;
   };
 
   const uploadFile = async () => {
