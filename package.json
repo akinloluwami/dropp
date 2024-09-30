@@ -11,7 +11,9 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "classnames": "^2.5.1",
+    "cookies-next": "^4.2.1",
     "drizzle-orm": "^0.33.0",
+    "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.446.0",
     "next": "14.2.13",
     "react": "^18",
@@ -22,6 +24,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
