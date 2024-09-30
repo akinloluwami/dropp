@@ -113,7 +113,7 @@ export default function Home() {
       </Head>
       {!!modal && (
         <div
-          className="absolute right-0 top-0 bg-black/10 backdrop-blur-sm w-full flex items-center justify-center h-screen"
+          className="absolute right-0 top-0 bg-black/80 z-50 backdrop-blur-lg w-full flex items-center justify-center h-screen px-5"
           onClick={() => setModal("")}
         >
           {modals[modal]}
