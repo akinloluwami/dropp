@@ -5,6 +5,7 @@ import { Tooltip } from "react-tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 import { LogSnagProvider } from "@logsnag/react";
+import { Analytics } from "@vercel/analytics/react";
 
 export default function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient();
@@ -16,6 +17,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <Tooltip id="tt" className="z-10" />
       <Toaster richColors />
+      <Analytics />
       <Component {...pageProps} />
     </QueryClientProvider>
     // </LogSnagProvider>
