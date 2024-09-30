@@ -9,7 +9,6 @@ import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
 import { useUserStore } from "@/stores/user";
 import { toast } from "sonner";
-// import { useLogSnag } from "@logsnag/react";
 
 export default function Home() {
   const [modal, setModal] = useState("");
@@ -18,7 +17,7 @@ export default function Home() {
   const fileRef = useRef<HTMLInputElement>(null);
   const dragCounter = useRef(0);
   const { setUser } = useUserStore();
-  // const { setUserId } = useLogSnag();
+
   const {
     isPending: loadingUser,
     data: user,
@@ -177,6 +176,7 @@ export default function Home() {
             if (file) {
               setFile(file!);
               setModal("file-info");
+              fileRef.current!.value = "";
             }
           }}
         />
