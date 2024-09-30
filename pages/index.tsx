@@ -21,6 +21,7 @@ export default function Home() {
   } = useQuery({
     queryKey: ["userProfile"],
     queryFn: () => axios.get("/api/user").then((res) => res.data),
+    retry: 0,
   });
 
   const modals: { [key: string]: JSX.Element } = {
