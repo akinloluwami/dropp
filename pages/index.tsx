@@ -5,6 +5,7 @@ import Signup from "./components/signup";
 import FileInfo from "./components/file-info";
 import axios from "axios";
 import useSWR from "swr";
+import UserProfile from "./components/user";
 
 export default function Home() {
   const [modal, setModal] = useState("");
@@ -106,18 +107,17 @@ export default function Home() {
           <h1 className="text-6xl font-bold">Drop the file anywhere</h1>
         </div>
       )}
-      <div className="flex items-center font-medium justify-between p-5 max-w-4xl mx-auto">
+      <div className="flex items-center font-medium justify-between px-5 h-20 max-w-4xl mx-auto">
         <p className="font-semibold">Dropp.</p>
         {!loadingUser && (
           <>
             {user ? (
-              <button className="p-1 rounded-full bg-white/50">
-                <img
-                  src={`https://api.dicebear.com/9.x/adventurer/svg?seed=${user.name}`}
-                  alt="avatar"
-                  className="rounded-full size-10"
+              <div className="">
+                <UserProfile
+                  user={user}
+                  onLogout={() => window.location.reload()}
                 />
-              </button>
+              </div>
             ) : (
               <div className="flex items-center gap-x-3">
                 <button onClick={() => setModal("login")}>Login</button>
