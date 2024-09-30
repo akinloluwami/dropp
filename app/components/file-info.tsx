@@ -37,32 +37,33 @@ const FileInfo: FC<{ file: File | null }> = ({ file }) => {
   };
 
   return (
-    <div className="w-[600px] bg-black rounded-xl px-5 py-10 flex flex-col">
-      <div className="flex items-center gap-x-10">
-        <div className="">
-          {types[file?.type.split("/")[0]!] || types["default"]}
-        </div>
-        <div className="flex flex-col gap-y-3 text-sm w-full">
-          <p
-            className="flex items-center gap-x-2"
-            data-tooltip-id="tt"
-            data-tooltip-content={file?.name!}
-          >
-            <Text />
-            {truncateFromEnd(file?.name!, 30)}
-          </p>
-          <p className="flex items-center gap-x-2">
-            <FileType />
-            {file?.type || "Unknown"}
-          </p>
-          <p className="flex items-center gap-x-2">
-            <Database />
-            {readableSize(file?.size!)}
-          </p>
-          <button className="rounded-full px-10 py-3 bg-white text-black font-medium text-base w-full">
-            Upload
-          </button>
-        </div>
+    <div
+      className="w-full max-w-[600px] mx-auto bg-black rounded-xl lg:px-10 px-5 py-10 lg:py-20 flex lg:flex-row flex-col items-center gap-10"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className="">
+        {types[file?.type.split("/")[0]!] || types["default"]}
+      </div>
+      <div className="flex flex-col gap-y-3 text-sm w-full">
+        <p
+          className="flex items-center gap-x-2"
+          data-tooltip-id="tt"
+          data-tooltip-content={file?.name!}
+        >
+          <Text />
+          {truncateFromEnd(file?.name!, 30)}
+        </p>
+        <p className="flex items-center gap-x-2">
+          <FileType />
+          {file?.type || "Unknown"}
+        </p>
+        <p className="flex items-center gap-x-2">
+          <Database />
+          {readableSize(file?.size!)}
+        </p>
+        <button className="rounded-full px-10 py-3 bg-white text-black font-medium text-base w-full">
+          Upload
+        </button>
       </div>
     </div>
   );
