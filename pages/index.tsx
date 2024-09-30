@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
 import { useUserStore } from "@/stores/user";
 import { toast } from "sonner";
+import FileList from "./components/file-list";
 
 export default function Home() {
   const [modal, setModal] = useState("");
@@ -129,7 +130,8 @@ export default function Home() {
         {!loadingUser && (
           <>
             {user ? (
-              <div className="">
+              <div className="flex items-center gap-x-5">
+                <FileList />
                 <UserProfile
                   user={user}
                   onLogout={() => window.location.reload()}
