@@ -17,5 +17,6 @@ export const setTokenCookie = (
     secure: process.env.NODE_ENV === "production",
     expires: dayjs().add(90, "days").toDate(),
     sameSite: "strict",
+    domain: process.env.COOKIE_DOMAIN,
   });
 };
