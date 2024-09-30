@@ -6,6 +6,7 @@ import FileInfo from "./components/file-info";
 import axios from "axios";
 import UserProfile from "./components/user";
 import { useQuery } from "@tanstack/react-query";
+import Head from "next/head";
 
 export default function Home() {
   const [modal, setModal] = useState("");
@@ -96,6 +97,11 @@ export default function Home() {
 
   return (
     <div className="relative">
+      <Head>
+        <title>Dropp. • Effortless file hosting</title>
+        <meta name="description" content="Effortless file hosting" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       {!!modal && (
         <div
           className="absolute right-0 top-0 bg-black/10 backdrop-blur-sm w-full flex items-center justify-center h-screen"
