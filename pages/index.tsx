@@ -4,8 +4,8 @@ import Login from "./components/login";
 import Signup from "./components/signup";
 import FileInfo from "./components/file-info";
 import axios from "axios";
-import useSWR from "swr";
 import UserProfile from "./components/user";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Home() {
   const [modal, setModal] = useState("");
@@ -14,13 +14,14 @@ export default function Home() {
   const fileRef = useRef<HTMLInputElement>(null);
   const dragCounter = useRef(0);
 
-  const fetcher = (url: string) => axios.get(url).then((res) => res.data);
-
   const {
+    isPending: loadingUser,
     data: user,
-    mutate: mutateUser,
-    isLoading: loadingUser,
-  } = useSWR("/api/user", fetcher);
+    refetch: mutateUser,
+  } = useQuery({
+    queryKey: ["userProfile"],
+    queryFn: () => axios.get("/api/user").then((res) => res.data),
+  });
 
   const modals: { [key: string]: JSX.Element } = {
     login: (
