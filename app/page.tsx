@@ -12,7 +12,7 @@ export default function Home() {
   const [isDragging, setIsDragging] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
-  const dragCounter = useRef(0); // Track drag depth
+  const dragCounter = useRef(0);
 
   const modals: { [key: string]: JSX.Element } = {
     login: <Login />,
@@ -77,9 +77,7 @@ export default function Home() {
           className="absolute right-0 top-0 bg-black/10 backdrop-blur-sm w-full flex items-center justify-center h-screen"
           onClick={() => setModal("")}
         >
-          <div className="" onClick={(e) => e.stopPropagation()}>
-            {modals[modal]}
-          </div>
+          {modals[modal]}
         </div>
       )}
       {isDragging && (
@@ -100,28 +98,11 @@ export default function Home() {
         </div>
       </div>
       <div className="flex mt-24 items-center flex-col max-w-3xl mx-auto">
-        <h1 className="text-7xl text-center">
-          <span className="block">
-            Effortless{" "}
-            <TypeAnimation
-              sequence={[
-                "file",
-                500,
-                "image",
-                500,
-                "video",
-                500,
-                "document",
-                500,
-                "file",
-              ]}
-              cursor={false}
-              speed={10}
-            />{" "}
-          </span>
+        <h1 className="lg:text-7xl text-6xl text-center">
+          <span className="block">Effortless file </span>
           uploads for everyone
         </h1>
-        <p className="text-xl mt-5 text-center text-[#606060]">
+        <p className="lg:text-xl px-5 mt-5 text-center text-gray-400">
           Drag and drop anywhere to upload a file up to{" "}
           <span
             className="font-semibold underline cursor-pointer"
