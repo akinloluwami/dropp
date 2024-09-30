@@ -1,6 +1,3 @@
-import { db } from "@/database";
-import { users } from "@/database/schema";
-import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 export const SignupFormSchema = z
@@ -21,7 +18,7 @@ export const SignupFormSchema = z
     message: "Passwords must match.",
   });
 
-export type FormState =
+export type SignupFormState =
   | {
       errors?: {
         name?: string[];
