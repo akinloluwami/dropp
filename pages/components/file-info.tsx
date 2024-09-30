@@ -102,11 +102,23 @@ const FileInfo: FC<{ file: File | null }> = ({ file }) => {
 
   return (
     <div
-      className="w-full max-w-[700px] mx-auto bg-black rounded-xl lg:px-10 px-5 py-10 lg:py-20 flex lg:flex-row flex-col items-center gap-10"
+      className="w-full max-w-[700px] mx-auto bg-black-001 rounded-xl lg:px-10 px-7 py-10 flex lg:flex-row flex-col items-center gap-10"
       onClick={(e) => e.stopPropagation()}
     >
-      <div>{types[file?.type.split("/")[0]!] || types["default"]}</div>
-      <div className="flex flex-col gap-y-3 text-sm w-full">
+      {file?.type.includes("image") ? (
+        <div className="lg:w-[50%] w-full h-[300px] rounded-md overflow-auto">
+          <img
+            src={URL.createObjectURL(file)}
+            className="w-full h-auto rounded-md object-cover"
+            style={{ minWidth: "100%", minHeight: "100%" }}
+          />
+        </div>
+      ) : (
+        <div className="lg:w-[50%] w-full h-[300px] flex items-center justify-center">
+          {types[file?.type.split("/")[0]!] || types["default"]}
+        </div>
+      )}
+      <div className="flex flex-col gap-y-3 text-sm w-full max-w-xs">
         <p
           className="flex items-center gap-x-2"
           data-tooltip-id="tt"
