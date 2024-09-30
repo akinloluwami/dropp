@@ -3,6 +3,8 @@ import { useRef, useState, useEffect } from "react";
 import Login from "./components/login";
 import Signup from "./components/signup";
 import FileInfo from "./components/file-info";
+import axios from "axios";
+import useSWR from "swr";
 
 export default function Home() {
   const [modal, setModal] = useState("");
@@ -11,9 +13,31 @@ export default function Home() {
   const fileRef = useRef<HTMLInputElement>(null);
   const dragCounter = useRef(0);
 
+  const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+
+  const {
+    data: user,
+    mutate: mutateUser,
+    isLoading: loadingUser,
+  } = useSWR("/api/user", fetcher);
+
   const modals: { [key: string]: JSX.Element } = {
-    login: <Login />,
-    signup: <Signup />,
+    login: (
+      <Login
+        onLoginSuccess={() => {
+          setModal("");
+          mutateUser();
+        }}
+      />
+    ),
+    signup: (
+      <Signup
+        onSignupSuccess={() => {
+          setModal("");
+          mutateUser();
+        }}
+      />
+    ),
     "file-info": <FileInfo file={file} />,
   };
 
@@ -84,15 +108,29 @@ export default function Home() {
       )}
       <div className="flex items-center font-medium justify-between p-5 max-w-4xl mx-auto">
         <p className="font-semibold">Dropp.</p>
-        <div className="flex items-center gap-x-3">
-          <button onClick={() => setModal("login")}>Login</button>
-          <button
-            className="px-4 py-2 rounded-full bg-white text-black"
-            onClick={() => setModal("signup")}
-          >
-            Sign up
-          </button>
-        </div>
+        {!loadingUser && (
+          <>
+            {user ? (
+              <button className="p-1 rounded-full bg-white/50">
+                <img
+                  src={`https://api.dicebear.com/9.x/adventurer/svg?seed=${user.name}`}
+                  alt="avatar"
+                  className="rounded-full size-10"
+                />
+              </button>
+            ) : (
+              <div className="flex items-center gap-x-3">
+                <button onClick={() => setModal("login")}>Login</button>
+                <button
+                  className="px-4 py-2 rounded-full bg-white text-black"
+                  onClick={() => setModal("signup")}
+                >
+                  Sign up
+                </button>
+              </div>
+            )}
+          </>
+        )}
       </div>
       <div className="flex mt-24 items-center flex-col max-w-3xl mx-auto">
         <h1 className="lg:text-7xl text-6xl text-center">
