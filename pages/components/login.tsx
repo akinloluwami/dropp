@@ -51,7 +51,7 @@ const Login: FC<{
 
   return (
     <form
-      className="w-full max-w-[400px] mx-auto bg-black rounded-xl px-5 py-10 flex flex-col"
+      className="w-full max-w-[400px] mx-auto bg-black-001 rounded-xl px-5 py-10 flex flex-col"
       onSubmit={handleSubmit}
       onClick={(e) => e.stopPropagation()}
     >
