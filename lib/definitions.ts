@@ -5,7 +5,10 @@ export const SignupFormSchema = z
     name: z
       .string()
       .min(2, { message: "Name must be at least 2 characters long." })
-      .trim(),
+      .trim()
+      .regex(/^[a-zA-Z]+$/i, {
+        message: "Name must only contain letters.",
+      }),
     email: z.string().email({ message: "Please enter a valid email." }).trim(),
     password: z
       .string()
