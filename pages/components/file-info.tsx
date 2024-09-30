@@ -36,6 +36,13 @@ const FileInfo: FC<{ file: File | null }> = ({ file }) => {
     return str;
   };
 
+  const newAbortSignal = (timeoutMs: number) => {
+    const abortController = new AbortController();
+    setTimeout(() => abortController.abort(), timeoutMs || 0);
+
+    return abortController.signal;
+  };
+
   return (
     <div
       className="w-full max-w-[600px] mx-auto bg-black rounded-xl lg:px-10 px-5 py-10 lg:py-20 flex lg:flex-row flex-col items-center gap-10"
