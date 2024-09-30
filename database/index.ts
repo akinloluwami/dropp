@@ -1,9 +1,9 @@
-import { drizzle } from "drizzle-orm/node-postgres";
-import { Client } from "pg";
+import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
 
-const client = new Client({
-  connectionString: process.env.DATABASE_URL,
-});
+const dbUrl =
+  "postgresql://akinloluwami:z9Fi4CHsoyDq@ep-broken-fog-64079012.us-east-2.aws.neon.tech/dropp?sslmode=require";
 
-await client.connect();
-const db = drizzle(client);
+console.log(dbUrl);
+const sql = neon(dbUrl);
+export const db = drizzle(sql);

@@ -1,3 +1,5 @@
+"use server";
+
 import { LoginFormSchema, LoginFormState } from "@/app/lib/definitions";
 import { db } from "@/database";
 import { users } from "@/database/schema";
