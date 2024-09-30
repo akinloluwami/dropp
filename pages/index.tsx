@@ -1,11 +1,8 @@
-"use client";
-
 import { Upload } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import Login from "./components/login";
 import Signup from "./components/signup";
 import FileInfo from "./components/file-info";
-import { TypeAnimation } from "react-type-animation";
 
 export default function Home() {
   const [modal, setModal] = useState("");
