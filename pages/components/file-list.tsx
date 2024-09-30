@@ -12,7 +12,6 @@ import React, { useState, useEffect } from "react";
 import classNames from "classnames";
 import axios from "axios";
 import { readableSize, truncateFromEnd } from "@/utils/files";
-import { read } from "fs";
 import { toast } from "sonner";
 
 const FileList = () => {
@@ -21,10 +20,9 @@ const FileList = () => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [hasMore, setHasMore] = useState(true); // To check if there are more files to load
-  const limit = 1; // Set the limit for pagination
+  const [hasMore, setHasMore] = useState(true);
+  const limit = 10;
 
-  // Fetch files function
   const fetchFiles = async (page: number) => {
     try {
       setLoading(true);
@@ -34,8 +32,8 @@ const FileList = () => {
       const { files: newFiles, totalPages } = response.data;
 
       setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-      setHasMore(page < totalPages); // Check if there are more pages to load
-      setError(null); // Clear any previous errors
+      setHasMore(page < totalPages);
+      setError(null);
     } catch (err: any) {
       setError("Something went wrong while fetching files.");
     } finally {
@@ -43,7 +41,6 @@ const FileList = () => {
     }
   };
 
-  // useEffect to load files when the page changes
   useEffect(() => {
     fetchFiles(page);
   }, [page]);
@@ -92,7 +89,7 @@ const FileList = () => {
           </button>
         </div>
 
-        <div className="flex flex-col gap-y-3 px-3">
+        <div className="flex flex-col gap-y-3 px-3 mt-10 lg:mt-5">
           {files.map((file) => (
             <div
               key={file.id}
@@ -111,7 +108,7 @@ const FileList = () => {
                   </div>
                 )}
                 <div className="text-sm">
-                  <p>{truncateFromEnd(file.originalName, 15)}</p>
+                  <p>{truncateFromEnd(file.originalName, 35)}</p>
                   <p
                     className="text-xs text-gray-500 cursor-pointer"
                     onClick={() => {
