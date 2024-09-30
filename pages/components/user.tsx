@@ -46,7 +46,7 @@ const UserProfile: FC<{
     <div className="relative">
       <button onClick={handleToggle} className="p-1 rounded-full bg-white/50">
         <img
-          src={`https://api.dicebear.com/9.x/adventurer/svg?seed=${user.name}`}
+          src={`https://api.dicebear.com/9.x/adventurer/svg?seed=${user?.name}`}
           alt="avatar"
           className="rounded-full size-10"
         />
@@ -56,8 +56,8 @@ const UserProfile: FC<{
           ref={popoverRef}
           className="absolute right-0 mt-2 w-[300px] p-5 bg-black shadow-lg rounded-lg"
         >
-          <p className="font-bold">{user.name}</p>
-          <p className="text-gray-600">{user.email}</p>
+          <p className="font-bold">{user?.name}</p>
+          <p className="text-gray-600">{user?.email}</p>
           <button
             onClick={handleLogout}
             className="w-full bg-red-500 text-white p-2 mt-3 rounded"
