@@ -3,11 +3,21 @@ import jwt from "jsonwebtoken";
 import { getCookie } from "cookies-next";
 
 export const withAuth =
-  (handler: any) => async (req: NextApiRequest, res: NextApiResponse) => {
+  (
+    handler: any,
+    config?: {
+      open?: boolean;
+    }
+  ) =>
+  async (req: NextApiRequest, res: NextApiResponse) => {
     const token = getCookie("dropp.token", {
       req,
       res,
     });
+
+    if (!token && config?.open) {
+      return await handler(req, res);
+    }
 
     if (!token) {
       return res.status(401).json({ error: "Token is missing in request." });
