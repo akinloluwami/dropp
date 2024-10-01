@@ -63,7 +63,7 @@ const FileInfo: FC<{ file: File | null }> = ({ file }) => {
         },
       });
 
-      setFileUrl(data.url);
+      setFileUrl(data.secureUrl);
     } catch (error) {
       console.error("Error during file upload:", error);
     } finally {
