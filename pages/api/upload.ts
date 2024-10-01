@@ -64,6 +64,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       blobStream.on("finish", async () => {
         const publicUrl = `http://${bucket.name}/${blob.name}`;
+        const secureUrl = `https://${bucket.name}/${blob.name}`;
 
         const fileDetails = {
           name: originalName,
@@ -73,6 +74,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           size: req.file.size,
           url: publicUrl,
           extension,
+          secureUrl,
         };
 
         if (req.userId) {
@@ -99,7 +101,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           originalName,
         });
 
-        resolve(res.status(200).json({ url: publicUrl, fileDetails }));
+        resolve(res.status(200).json(fileDetails));
       });
 
       //@ts-ignore
