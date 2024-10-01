@@ -105,6 +105,29 @@ export default function Home() {
     };
   }, []);
 
+  useEffect(() => {
+    const handlePaste = (e: ClipboardEvent) => {
+      const clipboardItems = e.clipboardData?.items;
+      if (!clipboardItems) return;
+
+      for (const item of clipboardItems) {
+        if (item.kind === "file") {
+          const file = item.getAsFile();
+          if (file) {
+            setFile(file);
+            setModal("file-info");
+          }
+        }
+      }
+    };
+
+    window.addEventListener("paste", handlePaste);
+
+    return () => {
+      window.removeEventListener("paste", handlePaste);
+    };
+  }, []);
+
   return (
     <div className="relative">
       <Head>
