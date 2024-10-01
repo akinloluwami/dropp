@@ -6,6 +6,7 @@ import { hash } from "bcryptjs";
 import { withErrorHandling } from "@/middlewares/error-handling";
 import { setTokenCookie } from "@/helpers/auth/setTokenCookie";
 import { logsnag } from "@/config/logsnag";
+import { op } from "@/config/openpanel";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { name, email, password, confirmPassword } = req.body;
@@ -43,6 +44,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 
+  await op.identify({
+    profileId: newUser.id,
+    email: newUser.email!,
+    properties: {
+      name: newUser.name,
+    },
+  });
+
   await logsnag.identify({
     user_id: newUser.id,
     properties: {
@@ -51,10 +60,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   });
 
+  await op.track("signup", {
+    profileId: newUser.id,
+    name: newUser.name,
+    email: newUser.email,
+  });
+
   await logsnag.track({
     channel: "users",
     event: "user-created",
-    description: `New user ${newUser.email}`,
+    description: newUser.email!,
     icon: "🔥",
     notify: true,
     user_id: newUser.id,
