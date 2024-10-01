@@ -20,6 +20,7 @@ export const files = pgTable("files", {
   type: text("type"),
   size: numeric("size"),
   url: text("url"),
+  secureUrl: text("secure_url"),
   extension: text("extension"),
   userId: text("user_id"),
   createdAt: timestamp("created_at", {
