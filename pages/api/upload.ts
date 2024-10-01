@@ -1,5 +1,6 @@
 import { bucket } from "@/config/gcs";
 import { logsnag } from "@/config/logsnag";
+import { op } from "@/config/openpanel";
 import { db } from "@/database";
 import { files } from "@/database/schema";
 import { withAuth } from "@/middlewares/auth";
@@ -94,11 +95,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           }
         }
 
-        await db.insert(files).values({
-          ...fileDetails,
-          userId: req.userId,
-          generatedName: randomFileName,
-          originalName,
+        const [newFile] = await db
+          .insert(files)
+          .values({
+            ...fileDetails,
+            userId: req.userId,
+            generatedName: randomFileName,
+            originalName,
+          })
+          .returning();
+
+        await op.track("file-upload", {
+          ...newFile,
+          profileId: req.userId,
         });
 
         resolve(res.status(200).json(fileDetails));
