@@ -133,7 +133,7 @@ export default function Home() {
       <Head>
         <title>Dropp. • Effortless file hosting</title>
         <meta name="description" content="Effortless file hosting" />
-        <link rel="icon" href="http://cdn.dropp.cloud/dropp-circle.png" />
+        <link rel="icon" href="https://cdn.dropp.cloud/dropp-circle.png" />
       </Head>
       {!!modal && (
         <div
@@ -149,7 +149,7 @@ export default function Home() {
         </div>
       )}
       <div className="flex items-center font-medium justify-between px-5 h-20 max-w-4xl mx-auto">
-        <img src="http://cdn.dropp.cloud/dropp.png" className="" />
+        <img src="https://cdn.dropp.cloud/dropp.png" className="" />
         {!loadingUser && (
           <>
             {user ? (
