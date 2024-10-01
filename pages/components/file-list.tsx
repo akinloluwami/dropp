@@ -98,7 +98,7 @@ const FileList = () => {
               <div className="flex gap-x-2">
                 {file?.type.includes("image") ? (
                   <img
-                    src={file.url}
+                    src={file.secureUrl}
                     className="size-10 rounded-md object-cover"
                   />
                 ) : (
@@ -112,11 +112,11 @@ const FileList = () => {
                   <p
                     className="text-xs text-gray-500 cursor-pointer"
                     onClick={() => {
-                      navigator.clipboard.writeText(file.url);
+                      navigator.clipboard.writeText(file.secureUrl);
                       toast.success("File URL copied to clipboard");
                     }}
                   >
-                    {file.url}
+                    {file.secureUrl}
                   </p>
                   <p className="text-xs text-gray-500">
                     {readableSize(file.size)}
