@@ -18,6 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     id: user.id,
     email: user.email,
     name: user.name,
+    isVerified: user.isVerified,
   });
 };
 
