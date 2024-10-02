@@ -64,8 +64,10 @@ const FileInfo: FC<{ file: File | null }> = ({ file }) => {
       });
 
       setFileUrl(data.secureUrl);
-    } catch (error) {
-      console.error("Error during file upload:", error);
+    } catch (error: any) {
+      toast.error(
+        error.response.data.error || "Something went wrong. Please try again"
+      );
     } finally {
       setUploading(false);
     }
