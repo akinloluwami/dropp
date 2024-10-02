@@ -2,7 +2,7 @@ import { bucket } from "@/config/gcs";
 import { logsnag } from "@/config/logsnag";
 import { op } from "@/config/openpanel";
 import { db } from "@/database";
-import { files } from "@/database/schema";
+import { files, users } from "@/database/schema";
 import { withAuth } from "@/middlewares/auth";
 import { withErrorHandling } from "@/middlewares/error-handling";
 import { eq } from "drizzle-orm";
@@ -30,6 +30,19 @@ const generateRandomFileName = () => {
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  if (req.userId) {
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, req.userId));
+
+    if (!user.isVerified) {
+      return res
+        .status(403)
+        .json({ error: "Please verify your email to upload files." });
+    }
+  }
+
   return new Promise((resolve, reject) => {
     //@ts-ignore
     uploadHandler(req, res, async (err) => {
