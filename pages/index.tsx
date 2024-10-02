@@ -10,6 +10,7 @@ import Head from "next/head";
 import { useUserStore } from "@/stores/user";
 import { toast } from "sonner";
 import FileList from "./components/file-list";
+import Otp from "./components/otp";
 
 export default function Home() {
   const [modal, setModal] = useState("");
@@ -17,7 +18,7 @@ export default function Home() {
   const [file, setFile] = useState<File | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const dragCounter = useRef(0);
-  const { setUser } = useUserStore();
+  const { user: userProfile, setUser } = useUserStore();
 
   const {
     isPending: loadingUser,
@@ -46,13 +47,21 @@ export default function Home() {
     signup: (
       <Signup
         onSignupSuccess={() => {
-          setModal("");
+          setModal("otp");
           mutateUser();
           toast.success("Signed up successfully");
         }}
       />
     ),
     "file-info": <FileInfo file={file} />,
+    otp: (
+      <Otp
+        onVerify={() => {
+          setModal("");
+          mutateUser();
+        }}
+      />
+    ),
   };
 
   useEffect(() => {
@@ -128,6 +137,12 @@ export default function Home() {
     };
   }, []);
 
+  useEffect(() => {
+    if (userProfile.id && !userProfile.isVerified) {
+      setModal("otp");
+    }
+  }, [userProfile]);
+
   return (
     <div className="relative">
       <Head>
@@ -138,7 +153,11 @@ export default function Home() {
       {!!modal && (
         <div
           className="absolute right-0 top-0 bg-black/80 z-50 backdrop-blur-lg w-full flex items-center justify-center h-screen px-5"
-          onClick={() => setModal("")}
+          onClick={() => {
+            if (userProfile.id && !userProfile.isVerified && modal === "otp")
+              return;
+            setModal("");
+          }}
         >
           {modals[modal]}
         </div>
