@@ -37,3 +37,6 @@ drizzle
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+pages/api/auth/blast.ts
