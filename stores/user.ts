@@ -4,6 +4,7 @@ interface UserProps {
   id: string;
   name: string;
   email: string;
+  isVerified: boolean;
 }
 
 interface UserStore {
@@ -12,6 +13,6 @@ interface UserStore {
 }
 
 export const useUserStore = create<UserStore>((set) => ({
-  user: { id: "", name: "", email: "" },
+  user: { id: "", name: "", email: "", isVerified: false },
   setUser: (user) => set({ user }),
 }));
