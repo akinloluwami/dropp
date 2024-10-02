@@ -7,6 +7,7 @@ import { withErrorHandling } from "@/middlewares/error-handling";
 import { setTokenCookie } from "@/helpers/auth/setTokenCookie";
 import { logsnag } from "@/config/logsnag";
 import { op } from "@/config/openpanel";
+import { generateAlphabeticalOtp } from "@/utils/otp";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { name, email, password, confirmPassword } = req.body;
@@ -29,14 +30,38 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const hashedPassword = await hash(password, 10);
 
+  const otp = generateAlphabeticalOtp();
+
   const [newUser] = await db
     .insert(users)
     .values({
       name,
       email,
+      otp,
       password: hashedPassword,
     })
     .returning();
+
+  await fetch("https://api.useplunk.com/v1/send", {
+    method: "POST",
+    body: JSON.stringify({
+      to: newUser.email,
+      subject: "Verify your email.",
+      body: `
+      Hi ${newUser.name},<br>
+      Thank you for signing up with Dropp. <br>
+      Please verify your email. <br> <br>
+      Your OTP is:
+      <h1>${otp}</h1>
+      Cheers, <br>
+      Akinkunmi
+      `,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.PLUNK_API_KEY}`,
+    },
+  });
 
   if (!newUser) {
     return res.status(500).json({
