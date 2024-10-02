@@ -198,18 +198,20 @@ export default function Home() {
           <span className="block">Effortless file </span>
           uploads for everyone
         </h1>
-        <p className="lg:text-xl px-5 mt-5 text-center text-gray-400">
-          Drag and drop anywhere to upload a file up to{" "}
-          <span
-            className="font-semibold underline cursor-pointer"
-            data-tooltip-content="Up to 100MB if you're logged in"
-            data-tooltip-id="tt"
-            data-tooltip-variant="light"
-          >
-            25MB
-          </span>
-          . No login required.
-        </p>
+        {!userProfile.id && (
+          <p className="lg:text-xl px-5 mt-5 text-center text-gray-400">
+            Drag and drop anywhere to upload a file up to{" "}
+            <span
+              className="font-semibold underline cursor-pointer"
+              data-tooltip-content="Up to 100MB if you're logged in"
+              data-tooltip-id="tt"
+              data-tooltip-variant="light"
+            >
+              25MB
+            </span>
+            . No login required.
+          </p>
+        )}
 
         <input
           type="file"
@@ -232,7 +234,9 @@ export default function Home() {
           <Upload />
           Click to upload.
         </button>
-        <p className="text-xs italic mt-1">It's free, seriously.</p>
+        {!userProfile.id && (
+          <p className="text-xs italic mt-1">It's free, seriously.</p>
+        )}
       </div>
     </div>
   );
