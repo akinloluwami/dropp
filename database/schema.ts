@@ -13,6 +13,7 @@ export const users = pgTable("users", {
   email: text("email"),
   password: text("password"),
   otp: text("otp"),
+  passwordResetToken: text("password_reset_token"),
   isVerified: boolean("is_verified").default(false),
   createdAt: timestamp("created_at", {
     withTimezone: true,
