@@ -11,6 +11,7 @@ import { useUserStore } from "@/stores/user";
 import { toast } from "sonner";
 import FileList from "./components/file-list";
 import Otp from "./components/otp";
+import ForgotPassword from "./components/forgot-password";
 
 export default function Home() {
   const [modal, setModal] = useState("");
@@ -42,6 +43,7 @@ export default function Home() {
           mutateUser();
           toast.success("Logged in successfully");
         }}
+        forgotPasswordClick={() => setModal("forgot-password")}
       />
     ),
     signup: (
@@ -61,6 +63,9 @@ export default function Home() {
           mutateUser();
         }}
       />
+    ),
+    "forgot-password": (
+      <ForgotPassword onPasswordReset={() => setModal("login")} />
     ),
   };
 
