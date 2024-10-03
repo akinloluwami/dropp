@@ -5,7 +5,8 @@ import { LoaderCircle } from "lucide-react";
 
 const Login: FC<{
   onLoginSuccess: () => void;
-}> = ({ onLoginSuccess }) => {
+  forgotPasswordClick: () => void;
+}> = ({ onLoginSuccess, forgotPasswordClick }) => {
   const [state, setState] = useState<LoginFormState>(undefined);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
@@ -50,50 +51,56 @@ const Login: FC<{
   };
 
   return (
-    <form
+    <div
       className="w-full max-w-[400px] mx-auto bg-black-001 rounded-xl px-5 py-10 flex flex-col"
       onSubmit={handleSubmit}
       onClick={(e) => e.stopPropagation()}
     >
       <h2 className="text-center text-3xl font-bold">Dropp.</h2>
       <p className="text-center text-sm">Log into your account</p>
+      <form className="w-full">
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleInputChange}
+          className="bg-[#242424]/40 p-3 rounded-xl mt-7 outline-none w-full"
+        />
+        {state?.errors?.email && (
+          <p className="text-sm text-red-500 mt-1">{state.errors.email[0]}</p>
+        )}
 
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={formData.email}
-        onChange={handleInputChange}
-        className="bg-[#242424]/40 p-3 rounded-xl mt-7 outline-none"
-      />
-      {state?.errors?.email && (
-        <p className="text-sm text-red-500 mt-1">{state.errors.email[0]}</p>
-      )}
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleInputChange}
+          className="bg-[#242424]/40 p-3 rounded-xl mt-5 outline-none w-full"
+        />
+        {state?.errors?.password && (
+          <p className="text-sm text-red-500 mt-1">
+            {state.errors.password[0]}
+          </p>
+        )}
 
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={formData.password}
-        onChange={handleInputChange}
-        className="bg-[#242424]/40 p-3 rounded-xl mt-5 outline-none"
-      />
-      {state?.errors?.password && (
-        <p className="text-sm text-red-500 mt-1">{state.errors.password[0]}</p>
-      )}
+        {state?.message && (
+          <p className="text-sm text-red-500">{state.message}</p>
+        )}
 
-      {state?.message && (
-        <p className="text-sm text-red-500">{state.message}</p>
-      )}
-
-      <button
-        className="bg-white text-black rounded-xl font-semibold p-3 mt-5 disabled:opacity-50 flex items-center justify-center disabled:cursor-not-allowed"
-        type="submit"
-        disabled={loading}
-      >
-        {loading ? <LoaderCircle className="animate-spin" /> : "Login"}
+        <button
+          className="bg-white text-black rounded-xl font-semibold p-3 mt-5 w-full disabled:opacity-50 flex items-center justify-center disabled:cursor-not-allowed"
+          type="submit"
+          disabled={loading}
+        >
+          {loading ? <LoaderCircle className="animate-spin" /> : "Login"}
+        </button>
+      </form>
+      <button className="mt-5 mx-auto w-fit" onClick={forgotPasswordClick}>
+        Forgot password?
       </button>
-    </form>
+    </div>
   );
 };
 
