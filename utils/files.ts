@@ -5,7 +5,7 @@ export const readableSize = (size: number) => {
     size /= 1024;
     i++;
   }
-  return `${size?.toFixed(2)} ${units[i]}`;
+  return `${Number(size)?.toFixed(2)} ${units[i]}`;
 };
 
 export const truncateFromEnd = (str: string, length: number) => {

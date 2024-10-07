@@ -92,34 +92,34 @@ const FileList = () => {
         <div className="flex flex-col gap-y-3 px-3 mt-10 lg:mt-5">
           {files.map((file) => (
             <div
-              key={file.id}
+              key={file?.id}
               className="flex items-center justify-between bg-black/30 p-3 rounded-xl"
             >
               <div className="flex gap-x-2">
                 {file?.type.includes("image") ? (
                   <img
-                    src={file.secureUrl}
+                    src={file?.secureUrl}
                     className="size-10 rounded-md object-cover"
                   />
                 ) : (
                   <div className="size-10 p-1 flex items-center justify-center bg-white/10 rounded-md flex-col">
                     {types[file?.type.split("/")[0]!] || types["default"]}
-                    <p className="text-xs">.{file.extension}</p>
+                    <p className="text-xs">.{file?.extension}</p>
                   </div>
                 )}
                 <div className="text-sm">
-                  <p>{truncateFromEnd(file.originalName, 35)}</p>
+                  <p>{truncateFromEnd(file?.originalName, 35)}</p>
                   <p
                     className="text-xs text-gray-500 cursor-pointer"
                     onClick={() => {
-                      navigator.clipboard.writeText(file.secureUrl);
+                      navigator.clipboard.writeText(file?.secureUrl);
                       toast.success("File URL copied to clipboard");
                     }}
                   >
-                    {file.secureUrl}
+                    {file?.secureUrl}
                   </p>
                   <p className="text-xs text-gray-500">
-                    {readableSize(file.size)}
+                    {readableSize(file?.size)}
                   </p>
                 </div>
               </div>
