@@ -55,7 +55,13 @@ export default function Home() {
         }}
       />
     ),
-    "file-info": <FileInfo file={file} />,
+    "file-info": (
+      <FileInfo
+        file={file}
+        onLoginClick={() => setModal("login")}
+        onSignUpClick={() => setModal("signup")}
+      />
+    ),
     otp: (
       <Otp
         onVerify={() => {
