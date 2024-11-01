@@ -161,7 +161,7 @@ const FileInfo: FC<{
         )}
         {!user.id && (
           <p className="text-xs bg-orange-700/10 text-orange-700 p-2 rounded-md">
-            Files uploaded without an account are deleted after 30 days.{" "}
+            Guests uploads are deleted after 30 days.{" "}
             <span
               className="font-semibold underline cursor-pointer hover:text-white transition-colors"
               onClick={onLoginClick}
