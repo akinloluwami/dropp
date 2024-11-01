@@ -17,7 +17,11 @@ import { useUserStore } from "@/stores/user";
 import { toast } from "sonner";
 import { readableSize, truncateFromEnd } from "@/utils/files";
 
-const FileInfo: FC<{ file: File | null }> = ({ file }) => {
+const FileInfo: FC<{
+  file: File | null;
+  onLoginClick: () => void;
+  onSignUpClick: () => void;
+}> = ({ file, onLoginClick, onSignUpClick }) => {
   const [uploading, setUploading] = useState(false);
   const [fileUrl, setFileUrl] = useState<string | null>(null);
   const [copyButtonText, setCopyButtonText] = useState("Copy");
@@ -154,6 +158,25 @@ const FileInfo: FC<{ file: File | null }> = ({ file }) => {
               </button>
             </div>
           </div>
+        )}
+        {!user.id && (
+          <p className="text-xs bg-orange-700/10 text-orange-700 p-2 rounded-md">
+            Files uploaded without an account are deleted after 30 days.{" "}
+            <span
+              className="font-semibold underline cursor-pointer hover:text-white transition-colors"
+              onClick={onLoginClick}
+            >
+              Login
+            </span>{" "}
+            or{" "}
+            <span
+              className="font-semibold underline cursor-pointer hover:text-white transition-colors"
+              onClick={onSignUpClick}
+            >
+              Signup
+            </span>{" "}
+            to keep your files forever.
+          </p>
         )}
       </div>
     </div>
