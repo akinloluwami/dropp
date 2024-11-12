@@ -8,6 +8,7 @@ import { setTokenCookie } from "@/helpers/auth/setTokenCookie";
 import { logsnag } from "@/config/logsnag";
 import { op } from "@/config/openpanel";
 import { generateAlphabeticalOtp } from "@/utils/otp";
+import axios from "axios";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { name, email, password, confirmPassword } = req.body;
@@ -42,26 +43,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
     .returning();
 
-  await fetch("https://api.useplunk.com/v1/send", {
-    method: "POST",
-    body: JSON.stringify({
+  await axios.post(
+    "https://api.useplunk.com/v1/send",
+    {
       to: newUser.email,
       subject: "Verify your email.",
       body: `
-      Hi ${newUser.name},<br>
-      Thank you for signing up with Dropp. <br>
-      Please verify your email. <br> <br>
-      Your OTP is:
-      <h1>${otp}</h1>
-      Cheers, <br>
-      Akinkunmi
-      `,
-    }),
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.PLUNK_API_KEY}`,
+        Hi ${newUser.name},<br>
+        Thank you for signing up with Dropp. <br>
+        Please verify your email. <br> <br>
+        Your OTP is:
+        <h1>${otp}</h1>
+        Cheers, <br>
+        Akinkunmi
+        `,
     },
-  });
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.PLUNK_API_KEY}`,
+      },
+    }
+  );
 
   if (!newUser) {
     return res.status(500).json({
