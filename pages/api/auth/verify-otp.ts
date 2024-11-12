@@ -9,12 +9,18 @@ import { NextApiRequest, NextApiResponse } from "next/types";
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { otp } = req.body;
 
+  if (!otp) {
+    return res.status(400).json({
+      error: "OTP is required",
+    });
+  }
+
   const [user] = await db
     .select()
     .from(users)
     .where(and(eq(users.otp, otp), eq(users.id, req.userId!)));
 
-  if (user.otp !== otp) {
+  if (!user || user.otp !== otp) {
     return res.status(401).json({
       error: "Invalid OTP",
     });
