@@ -10,6 +10,7 @@ import * as Icons from "solar-icon-set";
 import Link from "next/link";
 import Modal from "@/components/modal";
 import { useQueryClient } from "@tanstack/react-query";
+import { RiFileCopyLine } from "react-icons/ri";
 
 const languageLabels: Record<string, string> = {
   javascript: "JavaScript",
@@ -60,6 +61,7 @@ const SnippetPage: React.FC<SnippetPageProps> = ({ params }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [copied, setCopied] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [copiedPublic, setCopiedPublic] = useState(false);
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -74,6 +76,13 @@ const SnippetPage: React.FC<SnippetPageProps> = ({ params }) => {
       setIsDeleting(false);
       setShowDeleteModal(false);
     }
+  };
+
+  const handleCopyPublicLink = async () => {
+    const publicLink = `${process.env.NEXT_PUBLIC_APP_URL}/${data?.snippet?.short_code}`;
+    await navigator.clipboard.writeText(publicLink);
+    setCopiedPublic(true);
+    setTimeout(() => setCopiedPublic(false), 1500);
   };
 
   if (isLoading) {
@@ -123,6 +132,8 @@ const SnippetPage: React.FC<SnippetPageProps> = ({ params }) => {
 
   const snippet = data.snippet;
 
+  const publicLink = `${process.env.NEXT_PUBLIC_APP_URL}/${snippet.short_code}`;
+
   return (
     <div className="max-w-4xl mx-auto">
       {/* Header */}
@@ -137,12 +148,27 @@ const SnippetPage: React.FC<SnippetPageProps> = ({ params }) => {
 
         <div className="flex justify-between items-start mb-4">
           <div className="flex-1">
-            <h1 className="text-3xl font-medium text-white mb-2">
-              {snippet.title}
-              <span className="ml-4 text-base font-mono bg-gray-700 text-gray-200 px-2 py-0.5 rounded align-middle">
-                {snippet.short_code}
-              </span>
-            </h1>
+            <div className="flex items-center gap-x-2">
+              <h1 className="text-3xl font-medium text-white">
+                {snippet.title}
+              </h1>
+              <div className="flex items-center gap-x-0.5">
+                <Link
+                  href={publicLink}
+                  target="_blank"
+                  className="font-mono bg-white/10 hover:bg-white/15 transition-colors text-gray-200 px-1 py-0.5 rounded text-xs"
+                >
+                  {publicLink}
+                </Link>
+                <button onClick={handleCopyPublicLink} className="mt-1">
+                  {copiedPublic ? (
+                    <Icons.CheckCircle iconStyle="LineDuotone" size={18} />
+                  ) : (
+                    <Icons.Copy iconStyle="LineDuotone" size={18} />
+                  )}
+                </button>
+              </div>
+            </div>
             <div className="flex items-center gap-4 text-sm text-gray-400">
               <div className="flex items-center gap-2">
                 <Icons.Programming size={16} />
