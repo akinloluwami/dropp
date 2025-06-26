@@ -30,6 +30,7 @@ export const db = createClient({
           type: "string",
           required: true,
         },
+        short_code: { type: "string", required: true, unique: true },
       },
     },
   },
