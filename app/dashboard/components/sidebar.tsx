@@ -18,7 +18,7 @@ const Sidebar = () => {
 
   return (
     <div className="bg-[#0f0f0f] h-[calc(100vh-16px)] w-72 rounded-2xl border border-gray-50/5 p-3 fixed">
-      <p className="font-medium text-lg">Logo</p>
+      <p className="font-semibold text-lg">Dropp</p>
       <div className="mt-10">
         {links.map((link) => (
           <Link
