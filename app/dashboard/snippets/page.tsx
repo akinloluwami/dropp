@@ -2,9 +2,11 @@
 
 import { Button } from "@/components/button";
 import { useSnippets } from "@/lib/client/snippet-queries";
+import Link from "next/link";
 import React from "react";
 import { CgSpinner } from "react-icons/cg";
 import * as Icons from "solar-icon-set";
+import SnippetCard from "../components/snippet-card";
 
 const Dashboard = () => {
   const { data, isLoading, error } = useSnippets({
@@ -14,6 +16,12 @@ const Dashboard = () => {
 
   return (
     <div className="">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-medium">Snippets</h2>
+        <Link href="/dashboard/snippets/new">
+          <Button>Create Snippet</Button>
+        </Link>
+      </div>
       {isLoading && (
         <div className="flex flex-col gap-1 h-[80vh] items-center justify-center">
           <CgSpinner className="animate-spin text-gray-500" size={24} />
@@ -25,8 +33,17 @@ const Dashboard = () => {
         <div className="flex flex-col gap-4 h-[80vh] items-center justify-center">
           <Icons.Programming size={60} iconStyle="BoldDuotone" />
           <div className="text-center">
-            <Button>Create your first snippet</Button>
+            <Link href="/dashboard/snippets/new">
+              <Button>Create your first snippet</Button>
+            </Link>
           </div>
+        </div>
+      )}
+      {!isLoading && !error && data && data.snippets.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-6">
+          {data.snippets.map((snippet) => (
+            <SnippetCard key={snippet._id} snippet={snippet} />
+          ))}
         </div>
       )}
     </div>
