@@ -148,7 +148,7 @@ const EditSnippetPage: React.FC<EditSnippetPageProps> = ({ params }) => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto px-2 sm:px-4 lg:px-0">
       <div className="mb-8">
         <Link
           href={`/dashboard/snippets/${id}`}
@@ -272,7 +272,7 @@ const EditSnippetPage: React.FC<EditSnippetPageProps> = ({ params }) => {
           </div>
         )}
         {/* Action Buttons */}
-        <div className="flex gap-4 pt-4">
+        <div className="flex flex-col sm:flex-row gap-4 pt-4">
           <Button
             type="submit"
             loading={isSubmitting}
@@ -286,6 +286,7 @@ const EditSnippetPage: React.FC<EditSnippetPageProps> = ({ params }) => {
             variant="outline"
             onClick={() => router.push(`/dashboard/snippets/${id}`)}
             disabled={isSubmitting}
+            className="flex-1"
           >
             Cancel
           </Button>

@@ -15,9 +15,9 @@ const Dashboard = () => {
   });
 
   return (
-    <div className="">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-medium">Snippets</h2>
+    <div className="w-full max-w-6xl mx-auto px-2 sm:px-4 lg:px-0">
+      <div className="flex justify-between items-center gap-4">
+        <h2 className="text-xl font-medium">Snippets</h2>
         <Link href="/dashboard/snippets/new">
           <Button>Create Snippet</Button>
         </Link>

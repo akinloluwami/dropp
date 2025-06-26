@@ -45,12 +45,12 @@ function formatDate(date: string) {
 export const SnippetCard: React.FC<SnippetCardProps> = ({ snippet }) => {
   return (
     <Link href={`/dashboard/snippets/${snippet._id}`} className="block">
-      <div className="bg-[#18181b] border border-white/5 rounded-2xl p-5 hover:border-white/10 transition-colors flex flex-col gap-2 shadow-sm">
-        <div className="flex items-center gap-2 mb-1">
+      <div className="bg-[#18181b] border border-white/5 rounded-2xl p-4 sm:p-5 hover:border-white/10 transition-colors flex flex-col gap-2 shadow-sm">
+        <div className="flex flex-col xs:flex-row xs:items-center gap-2 mb-1">
           <span className="text-lg font-medium text-white line-clamp-1 flex-1">
             {snippet.title}
           </span>
-          <span className="ml-2 text-xs font-mono bg-gray-700 text-gray-200 px-2 py-0.5 rounded">
+          <span className="ml-0 xs:ml-2 text-xs font-mono bg-gray-700 text-gray-200 px-2 py-0.5 rounded">
             {snippet.short_code}
           </span>
           {snippet.is_public ? (
@@ -63,7 +63,7 @@ export const SnippetCard: React.FC<SnippetCardProps> = ({ snippet }) => {
             </span>
           )}
         </div>
-        <div className="flex items-center gap-2 text-xs text-gray-400 mb-1">
+        <div className="flex flex-wrap items-center gap-2 text-xs text-gray-400 mb-1">
           <Icons.Programming size={14} />
           <span>{languageLabels[snippet.language] || snippet.language}</span>
           <span className="mx-2">•</span>
@@ -75,7 +75,7 @@ export const SnippetCard: React.FC<SnippetCardProps> = ({ snippet }) => {
             {snippet.description}
           </div>
         )}
-        <pre className="bg-black/30 rounded-lg p-3 text-xs text-white/80 font-mono max-h-32 overflow-auto mt-1">
+        <pre className="bg-black/30 rounded-lg p-3 text-xs text-white/80 font-mono max-h-32 overflow-auto mt-1 break-words">
           {snippet.code.slice(0, 200)}
           {snippet.code.length > 200 ? "..." : ""}
         </pre>

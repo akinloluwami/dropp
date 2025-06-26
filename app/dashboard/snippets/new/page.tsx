@@ -113,7 +113,7 @@ const NewSnippetPage = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto px-2 sm:px-4 lg:px-0">
       <div className="mb-8">
         <Link
           href="/dashboard/snippets"
@@ -249,7 +249,7 @@ const NewSnippetPage = () => {
         )}
 
         {/* Action Buttons */}
-        <div className="flex gap-4 pt-4">
+        <div className="flex flex-col sm:flex-row gap-4 pt-4">
           <Button
             type="submit"
             loading={isLoading}
@@ -263,6 +263,7 @@ const NewSnippetPage = () => {
             variant="outline"
             onClick={() => router.push("/dashboard/snippets")}
             disabled={isLoading}
+            className="flex-1"
           >
             Cancel
           </Button>

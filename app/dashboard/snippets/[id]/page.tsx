@@ -135,7 +135,7 @@ const SnippetPage: React.FC<SnippetPageProps> = ({ params }) => {
   const publicLink = `${process.env.NEXT_PUBLIC_APP_URL}/${snippet.short_code}`;
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto px-2 sm:px-4 lg:px-0">
       {/* Header */}
       <div className="mb-8">
         <Link
@@ -146,9 +146,9 @@ const SnippetPage: React.FC<SnippetPageProps> = ({ params }) => {
           <span className="text-sm font-medium">Back to Snippets</span>
         </Link>
 
-        <div className="flex justify-between items-start mb-4">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-4">
           <div className="flex-1">
-            <div className="flex items-center gap-x-2">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-x-2 gap-y-2">
               <h1 className="text-3xl font-medium text-white">
                 {snippet.title}
               </h1>
@@ -169,7 +169,7 @@ const SnippetPage: React.FC<SnippetPageProps> = ({ params }) => {
                 </button>
               </div>
             </div>
-            <div className="flex items-center gap-4 text-sm text-gray-400">
+            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400 mt-2">
               <div className="flex items-center gap-2">
                 <Icons.Programming size={16} />
                 <span>
@@ -194,16 +194,16 @@ const SnippetPage: React.FC<SnippetPageProps> = ({ params }) => {
             </div>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <Link href={`/dashboard/snippets/${snippet._id}/edit`}>
-              <Button>
+              <Button className="w-full sm:w-auto">
                 <Icons.Pen size={16} className="mr-2" />
                 Edit
               </Button>
             </Link>
             <Button
               onClick={() => setShowDeleteModal(true)}
-              className="bg-red-500/10 text-red-500 hover:bg-red-500/20"
+              className="bg-red-500/10 text-red-500 hover:bg-red-500/20 w-full sm:w-auto"
             >
               <Icons.TrashBinTrash size={16} className="mr-2" />
               Delete
