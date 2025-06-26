@@ -50,6 +50,9 @@ export const SnippetCard: React.FC<SnippetCardProps> = ({ snippet }) => {
           <span className="text-lg font-medium text-white line-clamp-1 flex-1">
             {snippet.title}
           </span>
+          <span className="ml-2 text-xs font-mono bg-gray-700 text-gray-200 px-2 py-0.5 rounded">
+            {snippet.short_code}
+          </span>
           {snippet.is_public ? (
             <span className="flex items-center gap-1 text-xs text-green-400 bg-green-400/10 px-2 py-0.5 rounded">
               <Icons.Lock size={14} className="text-green-400" /> Public
