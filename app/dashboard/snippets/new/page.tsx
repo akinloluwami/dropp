@@ -12,6 +12,7 @@ import * as Icons from "solar-icon-set";
 import Link from "next/link";
 import { useQueryClient } from "@tanstack/react-query";
 import { snippetKeys } from "@/lib/client/snippet-queries";
+import Title from "@/components/title";
 
 const programmingLanguages = [
   { value: "javascript", label: "JavaScript" },
@@ -122,9 +123,7 @@ const NewSnippetPage = () => {
           <Icons.ArrowLeft size={18} />
           <span className="text-sm font-medium">Back to Snippets</span>
         </Link>
-        <h1 className="text-3xl font-medium text-white mb-2">
-          Create New Snippet
-        </h1>
+        <Title title="Create Snippet | Dropp" />
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">

@@ -12,6 +12,7 @@ import React, { useState, useEffect } from "react";
 import * as Icons from "solar-icon-set";
 import Link from "next/link";
 import { useQueryClient } from "@tanstack/react-query";
+import Title from "@/components/title";
 
 const programmingLanguages = [
   { value: "javascript", label: "JavaScript" },
@@ -157,7 +158,7 @@ const EditSnippetPage: React.FC<EditSnippetPageProps> = ({ params }) => {
           <Icons.ArrowLeft size={18} />
           <span className="text-sm font-medium">Back to Snippet</span>
         </Link>
-        <h1 className="text-3xl font-medium text-white mb-2">Edit Snippet</h1>
+        <Title title="Edit Snippet | Dropp" />
       </div>
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Title */}

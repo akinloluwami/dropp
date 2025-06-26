@@ -7,6 +7,7 @@ import React from "react";
 import { CgSpinner } from "react-icons/cg";
 import * as Icons from "solar-icon-set";
 import SnippetCard from "../components/snippet-card";
+import Title from "@/components/title";
 
 const Dashboard = () => {
   const { data, isLoading, error } = useSnippets({
@@ -16,6 +17,7 @@ const Dashboard = () => {
 
   return (
     <div className="w-full max-w-6xl mx-auto px-2 sm:px-4 lg:px-0">
+      <Title title="Snippets | Dropp" />
       <div className="flex justify-between items-center gap-4">
         <h2 className="text-xl font-medium">Snippets</h2>
         <Link href="/dashboard/snippets/new">

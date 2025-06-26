@@ -5,12 +5,14 @@ import { FlickeringGrid } from "@/components/flickering-grid";
 import Link from "next/link";
 import React from "react";
 import { useSession } from "@/lib/client/session";
+import Title from "@/components/title";
 
 const Home = () => {
   const { user, loading } = useSession();
 
   return (
     <div className="lg:p-10 p-3 flex items-center justify-center">
+      <Title title="Dropp" />
       <div className="bg-[#0f0f0f] max-w-7xl h-[calc(100vh-80px)] w-full mx-auto flex flex-col p-5 rounded-2xl border border-gray-50/5 gap-y-10 relative overflow-hidden">
         <FlickeringGrid
           className="absolute inset-0 z-0 size-full opacity-30"

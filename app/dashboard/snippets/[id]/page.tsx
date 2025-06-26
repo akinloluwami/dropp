@@ -11,6 +11,7 @@ import Link from "next/link";
 import Modal from "@/components/modal";
 import { useQueryClient } from "@tanstack/react-query";
 import { RiFileCopyLine } from "react-icons/ri";
+import Title from "@/components/title";
 
 const languageLabels: Record<string, string> = {
   javascript: "JavaScript",
@@ -149,9 +150,11 @@ const SnippetPage: React.FC<SnippetPageProps> = ({ params }) => {
         <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-4">
           <div className="flex-1">
             <div className="flex flex-col sm:flex-row sm:items-center gap-x-2 gap-y-2">
-              <h1 className="text-3xl font-medium text-white">
-                {snippet.title}
-              </h1>
+              <Title
+                title={
+                  snippet.title ? snippet.title + " | Dropp" : "Snippet | Dropp"
+                }
+              />
               <div className="flex items-center gap-x-0.5">
                 <Link
                   href={publicLink}

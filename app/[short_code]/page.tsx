@@ -7,6 +7,7 @@ import type { Snippet } from "@/lib/types/snippet";
 import { CgSpinner } from "react-icons/cg";
 import { Button } from "@/components/button";
 import Link from "next/link";
+import Title from "@/components/title";
 
 function PublicSnippetPage() {
   const pathname = usePathname();
@@ -75,7 +76,9 @@ function PublicSnippetPage() {
 
   return (
     <div className="max-w-2xl mx-auto py-5 px-4">
-      <h1 className="text-3xl font-bold text-white mb-2">{snippet.title}</h1>
+      <Title
+        title={snippet.title ? snippet.title + " | Dropp" : "Snippet | Dropp"}
+      />
       <div className="flex items-center gap-2 text-sm text-gray-400 mb-4">
         <Icons.Programming size={16} />
         <span>{snippet.language}</span>
