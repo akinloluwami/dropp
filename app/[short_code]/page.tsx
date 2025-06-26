@@ -79,6 +79,7 @@ function PublicSnippetPage() {
       <Title
         title={snippet.title ? snippet.title + " | Dropp" : "Snippet | Dropp"}
       />
+      <h1 className="text-3xl font-bold text-white mb-2">{snippet.title}</h1>
       <div className="flex items-center gap-2 text-sm text-gray-400 mb-4">
         <Icons.Programming size={16} />
         <span>{snippet.language}</span>
