@@ -12,6 +12,7 @@ export async function fetchSnippets(params?: {
   page?: number;
   limit?: number;
   public?: boolean;
+  collection_id?: string;
 }): Promise<SnippetsResponse> {
   const searchParams = new URLSearchParams();
 
@@ -19,6 +20,8 @@ export async function fetchSnippets(params?: {
   if (params?.limit) searchParams.append("limit", params.limit.toString());
   if (params?.public !== undefined)
     searchParams.append("public", params.public.toString());
+  if (params?.collection_id)
+    searchParams.append("collection_id", params.collection_id);
 
   const url = `${API_BASE}${
     searchParams.toString() ? `?${searchParams.toString()}` : ""
