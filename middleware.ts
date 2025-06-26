@@ -5,9 +5,6 @@ const SESSION_NAME = "dropp-auth-token";
 // Regex to match /api/snippets/[id] where id is a 6-char alphanumeric short code
 const publicSnippetRegex = /^\/api\/snippets\/[A-Za-z0-9]{6}$/;
 
-// Routes that require authentication
-const protectedRoutes = ["/dashboard", "/api/snippets"];
-
 // Routes that should redirect to dashboard if already authenticated
 const authRoutes = ["/auth"];
 
