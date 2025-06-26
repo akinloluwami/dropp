@@ -139,6 +139,9 @@ const SnippetPage: React.FC<SnippetPageProps> = ({ params }) => {
           <div className="flex-1">
             <h1 className="text-3xl font-medium text-white mb-2">
               {snippet.title}
+              <span className="ml-4 text-base font-mono bg-gray-700 text-gray-200 px-2 py-0.5 rounded align-middle">
+                {snippet.short_code}
+              </span>
             </h1>
             <div className="flex items-center gap-4 text-sm text-gray-400">
               <div className="flex items-center gap-2">
