@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   const error = searchParams.get("error");
 
   if (error) {
-    return NextResponse.redirect(`${REDIRECT_URI}/login?error=${error}`);
+    return NextResponse.redirect(`${REDIRECT_URI}/auth?error=${error}`);
   }
 
   if (!code) {
@@ -48,7 +48,6 @@ export async function GET(request: NextRequest) {
 
     const accessToken = tokenData.access_token;
 
-    // Get user data from GitHub
     const userResponse = await fetch("https://api.github.com/user", {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -58,7 +57,6 @@ export async function GET(request: NextRequest) {
 
     const userData = await userResponse.json();
 
-    // Get user email
     const emailResponse = await fetch("https://api.github.com/user/emails", {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -81,14 +79,44 @@ export async function GET(request: NextRequest) {
 
     if (existingUsers.length > 0) {
       user = existingUsers[0];
+      // Update user info if changed
+      const updatedFields: any = {};
+      if (user.name !== (userData.name || userData.login))
+        updatedFields.name = userData.name || userData.login;
+      if (user.email !== primaryEmail) updatedFields.email = primaryEmail;
+      if (user.username !== userData.login)
+        updatedFields.username = userData.login;
+      if (user.image !== userData.avatar_url)
+        updatedFields.image = userData.avatar_url;
+      if (Object.keys(updatedFields).length > 0) {
+        await db.users.update(user._id, updatedFields);
+        user = { ...user, ...updatedFields };
+      }
     } else {
-      user = await db.users.insert({
-        name: userData.name || userData.login,
-        email: primaryEmail,
-        username: userData.login,
-        githubId: userData.id.toString(),
-        image: userData.avatar_url,
+      // Check if user exists by email (for account linking)
+      const usersByEmail = await db.users.find({
+        filter: { email: primaryEmail },
       });
+      if (usersByEmail.length > 0) {
+        user = usersByEmail[0];
+        // Link GitHub ID and update info
+        const updatedFields: any = {
+          githubId: userData.id.toString(),
+          name: userData.name || userData.login,
+          username: userData.login,
+          image: userData.avatar_url,
+        };
+        await db.users.update(user._id, updatedFields);
+        user = { ...user, ...updatedFields };
+      } else {
+        user = await db.users.insert({
+          name: userData.name || userData.login,
+          email: primaryEmail,
+          username: userData.login,
+          githubId: userData.id.toString(),
+          image: userData.avatar_url,
+        });
+      }
     }
 
     const sessionToken = await createSession({
@@ -106,7 +134,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error("GitHub OAuth error:", error);
     return NextResponse.redirect(
-      `${REDIRECT_URI}/login?error=Authentication failed`
+      `${REDIRECT_URI}/auth?error=Authentication failed`
     );
   }
 }
