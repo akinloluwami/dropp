@@ -19,45 +19,25 @@ export async function GET(request: NextRequest) {
 
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "10");
-    const isPublic = searchParams.get("public");
 
-    let filter: any = {};
-
-    if (isPublic === "true") {
-      filter.is_public = true;
-    } else if (isPublic === "false") {
-      filter.is_public = false;
-      filter.user_id = user.id;
-    } else {
-      filter = {};
-    }
-
-    const allSnippets = await db.snippets.find({
-      filter,
+    const snippets = await db.snippets.find({
+      filter: {
+        user_id: user.id,
+      },
+      offset: (page - 1) * limit,
+      limit: limit,
+      sort: "createdAt",
     });
 
-    let snippets = allSnippets;
-    if (isPublic !== "true" && isPublic !== "false") {
-      snippets = allSnippets.filter(
-        (snippet) => snippet.user_id === user.id || snippet.is_public === true
-      );
-    }
-
-    snippets.sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
-
-    const offset = (page - 1) * limit;
-    const paginatedSnippets = snippets.slice(offset, offset + limit);
-
     return NextResponse.json({
-      snippets: paginatedSnippets,
+      snippets,
       pagination: {
         page,
         limit,
-        total: snippets.length,
-        totalPages: Math.ceil(snippets.length / limit),
+        total: await db.snippets.count({ filter: { user_id: user.id } }),
+        totalPages: Math.ceil(
+          (await db.snippets.count({ filter: { user_id: user.id } })) / limit
+        ),
       },
     });
   } catch (error) {
