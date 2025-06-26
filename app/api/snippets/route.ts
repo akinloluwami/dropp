@@ -19,11 +19,13 @@ export async function GET(request: NextRequest) {
 
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "10");
+    const collection_id = searchParams.get("collection_id");
+
+    const filter: any = { user_id: user.id };
+    if (collection_id) filter.collection_id = collection_id;
 
     const snippets = await db.snippets.find({
-      filter: {
-        user_id: user.id,
-      },
+      filter,
       offset: (page - 1) * limit,
       limit: limit,
       sort: "createdAt",
@@ -34,10 +36,8 @@ export async function GET(request: NextRequest) {
       pagination: {
         page,
         limit,
-        total: await db.snippets.count({ filter: { user_id: user.id } }),
-        totalPages: Math.ceil(
-          (await db.snippets.count({ filter: { user_id: user.id } })) / limit
-        ),
+        total: await db.snippets.count({ filter }),
+        totalPages: Math.ceil((await db.snippets.count({ filter })) / limit),
       },
     });
   } catch (error) {
@@ -62,7 +62,14 @@ export async function POST(request: NextRequest) {
     const user = await requireAuth();
     const body = await request.json();
 
-    const { title, description, code, language, is_public = false } = body;
+    const {
+      title,
+      description,
+      code,
+      language,
+      is_public = false,
+      collection_id,
+    } = body;
 
     if (!title) {
       return NextResponse.json({ error: "Title is required" }, { status: 400 });
@@ -95,6 +102,7 @@ export async function POST(request: NextRequest) {
       is_public: Boolean(is_public),
       user_id: user.id,
       short_code,
+      collection_id: collection_id || null,
     });
 
     return NextResponse.json({ snippet }, { status: 201 });
