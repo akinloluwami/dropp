@@ -8,6 +8,7 @@ export interface Snippet {
   is_public: boolean;
   createdAt: string;
   updatedAt: string;
+  short_code: string;
 }
 
 export interface CreateSnippetRequest {
@@ -16,6 +17,7 @@ export interface CreateSnippetRequest {
   code: string;
   language: string;
   is_public?: boolean;
+  short_code?: string;
 }
 
 export interface UpdateSnippetRequest {
@@ -24,6 +26,7 @@ export interface UpdateSnippetRequest {
   code: string;
   language: string;
   is_public?: boolean;
+  short_code?: string;
 }
 
 export interface SnippetsResponse {
