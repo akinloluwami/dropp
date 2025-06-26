@@ -15,6 +15,7 @@ export function useSnippets(params?: {
   page?: number;
   limit?: number;
   public?: boolean;
+  collection_id?: string;
 }) {
   return useQuery<SnippetsResponse>({
     queryKey: snippetKeys.list(params || {}),
