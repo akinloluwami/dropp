@@ -7,31 +7,25 @@ export async function GET(request: NextRequest) {
     const user = await requireAuth();
     const { searchParams } = new URL(request.url);
 
-    // Get query parameters
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "10");
     const isPublic = searchParams.get("public");
 
-    // Build query filters
     let filter: any = {};
 
     if (isPublic === "true") {
       filter.is_public = true;
     } else if (isPublic === "false") {
       filter.is_public = false;
-      filter.user_id = user.id; // Only show user's private snippets
+      filter.user_id = user.id;
     } else {
-      // Default: show user's snippets and public snippets
-      // Note: NotDB doesn't support $or, so we'll fetch all and filter in memory
       filter = {};
     }
 
-    // Fetch snippets
     const allSnippets = await db.snippets.find({
       filter,
     });
 
-    // Apply additional filtering for mixed public/private view
     let snippets = allSnippets;
     if (isPublic !== "true" && isPublic !== "false") {
       snippets = allSnippets.filter(
@@ -39,13 +33,11 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Sort by creation date (newest first)
     snippets.sort(
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
 
-    // Apply pagination
     const offset = (page - 1) * limit;
     const paginatedSnippets = snippets.slice(offset, offset + limit);
 
@@ -80,7 +72,6 @@ export async function POST(request: NextRequest) {
     const user = await requireAuth();
     const body = await request.json();
 
-    // Validate required fields
     const { title, description, code, language, is_public = false } = body;
 
     if (!title) {
@@ -98,7 +89,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create new snippet
     const snippet = await db.snippets.insert({
       title,
       description,
