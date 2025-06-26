@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 const SESSION_NAME = "dropp-auth-token";
 
+// Regex to match /api/snippets/[id] where id is a 6-char alphanumeric short code
+const publicSnippetRegex = /^\/api\/snippets\/[A-Za-z0-9]{6}$/;
+
 // Routes that require authentication
 const protectedRoutes = ["/dashboard", "/api/snippets"];
 
@@ -12,9 +15,15 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Check if route is protected
-  const isProtectedRoute = protectedRoutes.some((route) =>
-    pathname.startsWith(route)
-  );
+  let isProtectedRoute = false;
+  if (pathname.startsWith("/dashboard")) {
+    isProtectedRoute = true;
+  } else if (pathname.startsWith("/api/snippets")) {
+    // Allow public access to /api/snippets/[id] where id is a 6-char short code
+    if (!publicSnippetRegex.test(pathname)) {
+      isProtectedRoute = true;
+    }
+  }
 
   // Check if route is auth route (login)
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
