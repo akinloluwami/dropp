@@ -1,13 +1,15 @@
 "use client";
 
 import { Button } from "@/components/button";
-import { useSnippet } from "@/lib/client/snippet-queries";
+import { useSnippet, snippetKeys } from "@/lib/client/snippet-queries";
 import { deleteSnippet } from "@/lib/client/snippets";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { CgSpinner } from "react-icons/cg";
 import * as Icons from "solar-icon-set";
 import Link from "next/link";
+import Modal from "@/components/modal";
+import { useQueryClient } from "@tanstack/react-query";
 
 const languageLabels: Record<string, string> = {
   javascript: "JavaScript",
@@ -52,25 +54,25 @@ interface SnippetPageProps {
 
 const SnippetPage: React.FC<SnippetPageProps> = ({ params }) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { id } = React.use(params);
   const { data, isLoading, error } = useSnippet(id);
   const [isDeleting, setIsDeleting] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const handleDelete = async () => {
-    if (!confirm("Are you sure you want to delete this snippet?")) {
-      return;
-    }
-
     setIsDeleting(true);
     try {
       await deleteSnippet(id);
+      await queryClient.invalidateQueries({ queryKey: snippetKeys.lists() });
       router.push("/dashboard/snippets");
     } catch (error) {
       console.error("Failed to delete snippet:", error);
       alert("Failed to delete snippet. Please try again.");
     } finally {
       setIsDeleting(false);
+      setShowDeleteModal(false);
     }
   };
 
@@ -171,8 +173,7 @@ const SnippetPage: React.FC<SnippetPageProps> = ({ params }) => {
               </Button>
             </Link>
             <Button
-              onClick={handleDelete}
-              loading={isDeleting}
+              onClick={() => setShowDeleteModal(true)}
               className="bg-red-500/10 text-red-500 hover:bg-red-500/20"
             >
               <Icons.TrashBinTrash size={16} className="mr-2" />
@@ -217,6 +218,43 @@ const SnippetPage: React.FC<SnippetPageProps> = ({ params }) => {
           </pre>
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        title="Delete Snippet"
+        size="sm"
+      >
+        <div className="text-center">
+          <Icons.TrashBinTrash
+            size={48}
+            className="mx-auto mb-4 text-red-400"
+          />
+          <h3 className="text-lg font-medium text-white mb-2">Are you sure?</h3>
+          <p className="text-gray-400 mb-6">
+            This action cannot be undone. This will permanently delete the
+            snippet.
+          </p>
+          <div className="flex gap-3">
+            <Button
+              onClick={() => setShowDeleteModal(false)}
+              className="flex-1"
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDelete}
+              loading={isDeleting}
+              disabled={isDeleting}
+              className="flex-1 bg-red-500 hover:bg-red-600 text-white"
+            >
+              {isDeleting ? "Deleting..." : "Delete"}
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
