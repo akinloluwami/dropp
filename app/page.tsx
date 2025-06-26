@@ -18,13 +18,13 @@ const Home = () => {
           width={2000}
         />
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between z-10">
           <h2 className="text-2xl font-medium">Dropp</h2>
           <Link href="/auth">
             <Button>Sign in</Button>
           </Link>
         </div>
-        <div className="flex flex-col items-center justify-center gap-y-4 text-center mt-40">
+        <div className="flex flex-col items-center justify-center gap-y-4 text-center mt-40 z-10">
           <h1 className="text-7xl">Your personal code vault.</h1>
           <p className="text-white/50 text-2xl">
             Save, organize, reuse and share the snippets that power your
