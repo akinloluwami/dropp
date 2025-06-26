@@ -22,7 +22,7 @@ export const db = createClient({
     snippets: {
       properties: {
         title: { type: "string", required: true },
-        description: { type: "string", required: true },
+        description: { type: "string" },
         code: { type: "string", required: true },
         user_id: { type: "string", required: true },
         is_public: { type: "boolean", required: true, default: false },
@@ -31,6 +31,14 @@ export const db = createClient({
           required: true,
         },
         short_code: { type: "string", required: true, unique: true },
+        collection_id: { type: "string" },
+      },
+    },
+    collections: {
+      properties: {
+        name: { type: "string", required: true },
+        description: { type: "string" },
+        user_id: { type: "string", required: true },
       },
     },
   },
