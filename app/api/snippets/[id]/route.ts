@@ -10,7 +10,6 @@ export async function GET(
     const user = await requireAuth();
     const { id } = params;
 
-    // Find snippet by ID
     const snippets = await db.snippets.find({
       filter: {
         _id: id,
@@ -23,7 +22,6 @@ export async function GET(
 
     const snippet = snippets[0];
 
-    // Check if user can access this snippet
     if (!snippet.is_public && snippet.user_id !== user.id) {
       return NextResponse.json({ error: "Access denied" }, { status: 403 });
     }
@@ -55,7 +53,6 @@ export async function PUT(
     const { id } = params;
     const body = await request.json();
 
-    // Find snippet by ID
     const snippets = await db.snippets.find({
       filter: {
         _id: id,
@@ -68,24 +65,27 @@ export async function PUT(
 
     const snippet = snippets[0];
 
-    // Check if user owns this snippet
     if (snippet.user_id !== user.id) {
       return NextResponse.json({ error: "Access denied" }, { status: 403 });
     }
 
-    // Validate required fields
     const { title, description, code, language, is_public } = body;
 
-    if (!title || !description || !code || !language) {
+    if (!title) {
+      return NextResponse.json({ error: "Title is required" }, { status: 400 });
+    }
+
+    if (!code) {
+      return NextResponse.json({ error: "Code is required" }, { status: 400 });
+    }
+
+    if (!language) {
       return NextResponse.json(
-        {
-          error: "Missing required fields: title, description, code, language",
-        },
+        { error: "Language is required" },
         { status: 400 }
       );
     }
 
-    // Update snippet
     const updatedSnippet = await db.snippets.update(id, {
       title,
       description,
@@ -120,7 +120,6 @@ export async function DELETE(
     const user = await requireAuth();
     const { id } = params;
 
-    // Find snippet by ID
     const snippets = await db.snippets.find({
       filter: {
         _id: id,
@@ -133,12 +132,10 @@ export async function DELETE(
 
     const snippet = snippets[0];
 
-    // Check if user owns this snippet
     if (snippet.user_id !== user.id) {
       return NextResponse.json({ error: "Access denied" }, { status: 403 });
     }
 
-    // Delete snippet
     await db.snippets.delete(id);
 
     return NextResponse.json({ message: "Snippet deleted successfully" });
