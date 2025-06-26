@@ -2,6 +2,45 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Environment Variables
+
+Create a `.env.local` file in the root directory with the following variables:
+
+```bash
+# GitHub OAuth Configuration
+GITHUB_CLIENT_ID=your_github_client_id_here
+GITHUB_CLIENT_SECRET=your_github_client_secret_here
+
+# NotDB Configuration
+NOTDB_API_KEY=your_notdb_api_key_here
+
+# Application Configuration
+NEXTAUTH_URL=http://localhost:3050
+```
+
+### GitHub OAuth Setup
+
+1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
+2. Click "New OAuth App"
+3. Fill in the application details:
+   - **Application name**: Your app name
+   - **Homepage URL**: `http://localhost:3050`
+   - **Authorization callback URL**: `http://localhost:3050/api/auth/github`
+4. Copy the Client ID and Client Secret to your `.env.local` file
+
+### Session Management
+
+This application uses stateful session tokens with the following features:
+
+- **Stateful Sessions**: Session tokens stored in database
+- **Automatic Expiration**: Sessions expire after 7 days
+- **Route Protection**: Middleware automatically protects routes
+- **Session Validation**: Server-side session verification
+- **Automatic Cleanup**: Expired sessions automatically deleted
+- **Minimal Storage**: Only stores token, user_id, and expires_at
+
+### Running the Application
+
 First, run the development server:
 
 ```bash
@@ -14,7 +53,7 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3050](http://localhost:3050) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
