@@ -54,6 +54,7 @@ const SnippetPage: React.FC<SnippetPageProps> = ({ params }) => {
   const router = useRouter();
   const { data, isLoading, error } = useSnippet(params.id);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const handleDelete = async () => {
     if (!confirm("Are you sure you want to delete this snippet?")) {
@@ -196,10 +197,20 @@ const SnippetPage: React.FC<SnippetPageProps> = ({ params }) => {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigator.clipboard.writeText(snippet.code)}
+            onClick={async () => {
+              await navigator.clipboard.writeText(snippet.code);
+              setCopied(true);
+              setTimeout(() => setCopied(false), 1500);
+            }}
           >
-            <Icons.Copy size={16} className="mr-2" />
-            Copy
+            {copied ? (
+              <Icons.CheckCircle size={16} className="mr-2 text-green-400" />
+            ) : (
+              <Icons.Copy size={16} className="mr-2" />
+            )}
+            <span className={copied ? "text-green-400" : undefined}>
+              {copied ? "Copied!" : "Copy"}
+            </span>
           </Button>
         </div>
         <div className="bg-[#18181b] border border-white/5 rounded-2xl p-6">
