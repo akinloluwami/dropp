@@ -7,25 +7,30 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const user = await requireAuth();
     const { id } = params;
-
-    const snippets = await db.snippets.find({
-      filter: {
-        _id: id,
-      },
-    });
-
+    // If id is 6 chars, treat as short_code for public access
+    if (id.length === 6 && /^[A-Za-z0-9]{6}$/.test(id)) {
+      const snippets = await db.snippets.find({
+        filter: { short_code: id, is_public: true },
+      });
+      if (snippets.length === 0) {
+        return NextResponse.json(
+          { error: "Snippet not found" },
+          { status: 404 }
+        );
+      }
+      return NextResponse.json({ snippet: snippets[0] });
+    }
+    // Otherwise, require auth and fetch by _id
+    const user = await requireAuth();
+    const snippets = await db.snippets.find({ filter: { _id: id } });
     if (snippets.length === 0) {
       return NextResponse.json({ error: "Snippet not found" }, { status: 404 });
     }
-
     const snippet = snippets[0];
-
     if (!snippet.is_public && snippet.user_id !== user.id) {
       return NextResponse.json({ error: "Access denied" }, { status: 403 });
     }
-
     return NextResponse.json({ snippet });
   } catch (error) {
     console.error("Error fetching snippet:", error);
