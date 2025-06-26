@@ -13,11 +13,13 @@ import Link from "next/link";
 import { useQueryClient } from "@tanstack/react-query";
 import { snippetKeys } from "@/lib/client/snippet-queries";
 import Title from "@/components/title";
+import { useCollections } from "@/lib/client/collection-queries";
 
 const programmingLanguages = [
   { value: "javascript", label: "JavaScript" },
   { value: "typescript", label: "TypeScript" },
   { value: "python", label: "Python" },
+  { value: "css", label: "CSS" },
   { value: "java", label: "Java" },
   { value: "csharp", label: "C#" },
   { value: "cpp", label: "C++" },
@@ -53,7 +55,12 @@ const NewSnippetPage = () => {
     code: "",
     language: "",
     is_public: false,
+    collection_id: "",
   });
+
+  const { data: collectionsData, isLoading: collectionsLoading } =
+    useCollections();
+  const userCollections = collectionsData?.collections || [];
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -224,6 +231,33 @@ const NewSnippetPage = () => {
             <p className="mt-1 text-sm text-red-400">{errors.code}</p>
           )}
         </div>
+
+        {/* Collection Select (if user has collections) */}
+        {userCollections.length > 0 && (
+          <div>
+            <label
+              htmlFor="collection_id"
+              className="block text-sm font-medium text-white mb-2"
+            >
+              Collection
+            </label>
+            <Select
+              id="collection_id"
+              name="collection_id"
+              value={formData.collection_id}
+              onChange={handleInputChange}
+              leftIcon={<Icons.Folder size={16} />}
+              disabled={collectionsLoading}
+            >
+              <option value="">No collection</option>
+              {userCollections.map((col) => (
+                <option key={col._id} value={col._id}>
+                  {col.name}
+                </option>
+              ))}
+            </Select>
+          </div>
+        )}
 
         {/* Public/Private Toggle */}
         <div>
