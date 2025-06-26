@@ -83,11 +83,17 @@ export async function POST(request: NextRequest) {
     // Validate required fields
     const { title, description, code, language, is_public = false } = body;
 
-    if (!title || !description || !code || !language) {
+    if (!title) {
+      return NextResponse.json({ error: "Title is required" }, { status: 400 });
+    }
+
+    if (!code) {
+      return NextResponse.json({ error: "Code is required" }, { status: 400 });
+    }
+
+    if (!language) {
       return NextResponse.json(
-        {
-          error: "Missing required fields: title, description, code, language",
-        },
+        { error: "Language is required" },
         { status: 400 }
       );
     }
