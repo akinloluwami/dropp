@@ -10,6 +10,8 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import * as Icons from "solar-icon-set";
 import Link from "next/link";
+import { useQueryClient } from "@tanstack/react-query";
+import { snippetKeys } from "@/lib/client/snippet-queries";
 
 const programmingLanguages = [
   { value: "javascript", label: "JavaScript" },
@@ -40,6 +42,7 @@ const programmingLanguages = [
 
 const NewSnippetPage = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -98,6 +101,8 @@ const NewSnippetPage = () => {
     setIsLoading(true);
     try {
       await createSnippet(formData);
+      // Invalidate and refetch the snippets list
+      await queryClient.invalidateQueries({ queryKey: snippetKeys.lists() });
       router.push("/dashboard/snippets");
     } catch (error) {
       console.error("Failed to create snippet:", error);
