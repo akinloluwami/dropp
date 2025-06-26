@@ -5,7 +5,7 @@ import React from "react";
 
 const Home = () => {
   return (
-    <div className="p-10 flex items-center justify-center">
+    <div className="lg:p-10 p-3 flex items-center justify-center">
       <div className="bg-[#0f0f0f] max-w-7xl h-[calc(100vh-80px)] w-full mx-auto flex flex-col p-5 rounded-2xl border border-gray-50/5 gap-y-10 relative overflow-hidden">
         <FlickeringGrid
           className="absolute inset-0 z-0 size-full opacity-30"
@@ -25,8 +25,8 @@ const Home = () => {
           </Link>
         </div>
         <div className="flex flex-col items-center justify-center gap-y-4 text-center mt-40 z-10">
-          <h1 className="text-7xl">Your personal code vault.</h1>
-          <p className="text-white/50 text-2xl">
+          <h1 className="lg:text-7xl text-5xl">Your personal code vault.</h1>
+          <p className="text-white/50 lg:text-2xl text-lg">
             Save, organize, reuse and share the snippets that power your
             workflow.
           </p>
