@@ -5,12 +5,13 @@ import { Input } from "@/components/input";
 import { Textarea } from "@/components/textarea";
 import { Select } from "@/components/select";
 import { Checkbox } from "@/components/checkbox";
-import { useSnippet } from "@/lib/client/snippet-queries";
+import { useSnippet, snippetKeys } from "@/lib/client/snippet-queries";
 import { updateSnippet } from "@/lib/client/snippets";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import * as Icons from "solar-icon-set";
 import Link from "next/link";
+import { useQueryClient } from "@tanstack/react-query";
 
 const programmingLanguages = [
   { value: "javascript", label: "JavaScript" },
@@ -40,12 +41,14 @@ const programmingLanguages = [
 ];
 
 interface EditSnippetPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const EditSnippetPage: React.FC<EditSnippetPageProps> = ({ params }) => {
   const router = useRouter();
-  const { data, isLoading, error } = useSnippet(params.id);
+  const queryClient = useQueryClient();
+  const { id } = React.use(params);
+  const { data, isLoading, error } = useSnippet(id);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -105,8 +108,10 @@ const EditSnippetPage: React.FC<EditSnippetPageProps> = ({ params }) => {
     if (!validateForm()) return;
     setIsSubmitting(true);
     try {
-      await updateSnippet(params.id, formData);
-      router.push(`/dashboard/snippets/${params.id}`);
+      await updateSnippet(id, formData);
+      await queryClient.invalidateQueries({ queryKey: snippetKeys.detail(id) });
+      await queryClient.invalidateQueries({ queryKey: snippetKeys.lists() });
+      router.push(`/dashboard/snippets/${id}`);
     } catch (err) {
       setErrors({ submit: "Failed to update snippet. Please try again." });
     } finally {
@@ -146,7 +151,7 @@ const EditSnippetPage: React.FC<EditSnippetPageProps> = ({ params }) => {
     <div className="max-w-4xl mx-auto">
       <div className="mb-8">
         <Link
-          href={`/dashboard/snippets/${params.id}`}
+          href={`/dashboard/snippets/${id}`}
           className="inline-flex items-center gap-2 text-white/70 hover:text-white transition mb-4"
         >
           <Icons.ArrowLeft size={18} />
@@ -279,7 +284,7 @@ const EditSnippetPage: React.FC<EditSnippetPageProps> = ({ params }) => {
           <Button
             type="button"
             variant="outline"
-            onClick={() => router.push(`/dashboard/snippets/${params.id}`)}
+            onClick={() => router.push(`/dashboard/snippets/${id}`)}
             disabled={isSubmitting}
           >
             Cancel
