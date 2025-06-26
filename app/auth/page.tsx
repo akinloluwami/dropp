@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SiGithub } from "react-icons/si";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/button";
@@ -8,7 +8,11 @@ import Link from "next/link";
 
 const Login = () => {
   const searchParams = useSearchParams();
-  const error = searchParams.get("error");
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setError(searchParams.get("error"));
+  }, [searchParams]);
 
   const handleGitHubLogin = () => {
     window.location.href = "/api/auth/github";
