@@ -4,10 +4,10 @@ import { db } from "@/lib/server/notdb";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
     // If id is 6 chars, treat as short_code for public access
     if (id.length === 6 && /^[A-Za-z0-9]{6}$/.test(id)) {
       const snippets = await db.snippets.find({
@@ -51,11 +51,11 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await requireAuth();
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
 
     const snippets = await db.snippets.find({
@@ -119,11 +119,11 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await requireAuth();
-    const { id } = params;
+    const { id } = await params;
 
     const snippets = await db.snippets.find({
       filter: {
