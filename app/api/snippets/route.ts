@@ -2,6 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/lib/server/auth";
 import { db } from "@/lib/server/notdb";
 
+function generateShortCode(length = 6) {
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
+
 export async function GET(request: NextRequest) {
   try {
     const user = await requireAuth();
@@ -89,6 +99,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    let short_code = "";
+    let exists = true;
+    while (exists) {
+      short_code = generateShortCode();
+      const found = await db.snippets.find({ filter: { short_code } });
+      exists = found.length > 0;
+    }
+
     const snippet = await db.snippets.insert({
       title,
       description,
@@ -96,6 +114,7 @@ export async function POST(request: NextRequest) {
       language,
       is_public: Boolean(is_public),
       user_id: user.id,
+      short_code,
     });
 
     return NextResponse.json({ snippet }, { status: 201 });
