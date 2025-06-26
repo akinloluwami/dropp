@@ -2,19 +2,23 @@
 
 import React, { useEffect, useState } from "react";
 import { SiGithub } from "react-icons/si";
-import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/button";
 import Link from "next/link";
+import { CgSpinner } from "react-icons/cg";
 
 const Login = () => {
-  const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setError(searchParams.get("error"));
-  }, [searchParams]);
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      setError(params.get("error"));
+    }
+  }, []);
 
   const handleGitHubLogin = () => {
+    setLoading(true);
     window.location.href = "/api/auth/github";
   };
 
@@ -35,8 +39,13 @@ const Login = () => {
           </div>
         )}
 
-        <Button onClick={handleGitHubLogin}>
-          <SiGithub className="mr-2" /> Continue with GitHub
+        <Button onClick={handleGitHubLogin} disabled={loading}>
+          {loading ? (
+            <CgSpinner className="animate-spin mr-2" />
+          ) : (
+            <SiGithub className="mr-2" />
+          )}
+          Continue with GitHub
         </Button>
       </div>
     </div>
