@@ -16,8 +16,8 @@ Save, organize, reuse and share the snippets that power your workflow.
 ## Roadmap
 
 - [x] Create, edit, delete and share snippets.
-- [ ] Star snippets.
 - [ ] Organize snippets into collections.
+- [ ] Star snippets.
 - [ ] Snippet analytics.
 - [ ] Public profile pages.
 - [ ] Star snippets.
