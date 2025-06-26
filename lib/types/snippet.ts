@@ -9,6 +9,7 @@ export interface Snippet {
   createdAt: string;
   updatedAt: string;
   short_code: string;
+  collection_id?: string;
 }
 
 export interface CreateSnippetRequest {
