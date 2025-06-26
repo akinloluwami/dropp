@@ -6,7 +6,7 @@ const SESSION_NAME = "dropp-auth-token";
 const protectedRoutes = ["/dashboard", "/api/snippets"];
 
 // Routes that should redirect to dashboard if already authenticated
-const authRoutes = ["/login"];
+const authRoutes = ["/auth"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -26,7 +26,7 @@ export async function middleware(request: NextRequest) {
     // For stateful sessions, we'll let the server-side handle validation
     // The middleware just checks if a token exists
     if (isAuthRoute) {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
+      return NextResponse.redirect(new URL("/dashboard/snippets", request.url));
     }
 
     // Allow access to protected routes
@@ -34,7 +34,7 @@ export async function middleware(request: NextRequest) {
   } else {
     // No session token
     if (isProtectedRoute) {
-      return NextResponse.redirect(new URL("/login", request.url));
+      return NextResponse.redirect(new URL("/auth", request.url));
     }
 
     return NextResponse.next();
