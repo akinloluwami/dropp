@@ -5,6 +5,7 @@ import { SiGithub } from "react-icons/si";
 import { Button } from "@/components/button";
 import Link from "next/link";
 import { CgSpinner } from "react-icons/cg";
+import Title from "@/components/title";
 
 const Login = () => {
   const [error, setError] = useState<string | null>(null);
@@ -24,6 +25,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center">
+      <Title title="Login | Dropp" />
       <div className="max-w-md w-full space-y-4 flex flex-col items-center">
         <Link href="/" className="font-semibold text-2xl">
           <h2 className="text-2xl font-medium">Dropp</h2>
