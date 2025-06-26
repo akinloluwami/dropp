@@ -13,10 +13,10 @@ const Home = () => {
           </Link>
         </div>
         <div className="flex flex-col items-center justify-center gap-y-4 text-center mt-40">
-          <h1 className="text-6xl">Your code library supercharged.</h1>
+          <h1 className="text-7xl">Your personal code vault.</h1>
           <p className="text-white/50 text-2xl">
-            Never forget that one regex again. Build a library of your favorite
-            code snippets.
+            Save, organize, reuse and share the snippets that power your
+            workflow.
           </p>
           <Link href="/auth">
             <Button>Create an Account</Button>
