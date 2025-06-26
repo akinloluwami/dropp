@@ -47,12 +47,13 @@ function formatDate(date: string) {
 }
 
 interface SnippetPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const SnippetPage: React.FC<SnippetPageProps> = ({ params }) => {
   const router = useRouter();
-  const { data, isLoading, error } = useSnippet(params.id);
+  const { id } = React.use(params);
+  const { data, isLoading, error } = useSnippet(id);
   const [isDeleting, setIsDeleting] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -63,7 +64,7 @@ const SnippetPage: React.FC<SnippetPageProps> = ({ params }) => {
 
     setIsDeleting(true);
     try {
-      await deleteSnippet(params.id);
+      await deleteSnippet(id);
       router.push("/dashboard/snippets");
     } catch (error) {
       console.error("Failed to delete snippet:", error);
@@ -164,16 +165,15 @@ const SnippetPage: React.FC<SnippetPageProps> = ({ params }) => {
 
           <div className="flex gap-2">
             <Link href={`/dashboard/snippets/${snippet._id}/edit`}>
-              <Button variant="outline" size="sm">
+              <Button>
                 <Icons.Pen size={16} className="mr-2" />
                 Edit
               </Button>
             </Link>
             <Button
-              variant="destructive"
-              size="sm"
               onClick={handleDelete}
               loading={isDeleting}
+              className="bg-red-500/10 text-red-500 hover:bg-red-500/20"
             >
               <Icons.TrashBinTrash size={16} className="mr-2" />
               Delete
@@ -195,8 +195,6 @@ const SnippetPage: React.FC<SnippetPageProps> = ({ params }) => {
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-lg font-medium text-white">Code</h3>
           <Button
-            variant="ghost"
-            size="sm"
             onClick={async () => {
               await navigator.clipboard.writeText(snippet.code);
               setCopied(true);
@@ -204,7 +202,7 @@ const SnippetPage: React.FC<SnippetPageProps> = ({ params }) => {
             }}
           >
             {copied ? (
-              <Icons.CheckCircle size={16} className="mr-2 text-green-400" />
+              <Icons.CheckCircle size={16} className="mr-2 !text-green-400" />
             ) : (
               <Icons.Copy size={16} className="mr-2" />
             )}
