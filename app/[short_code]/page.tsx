@@ -74,7 +74,7 @@ function PublicSnippetPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto py-12 px-4">
+    <div className="max-w-2xl mx-auto py-5 px-4">
       <h1 className="text-3xl font-bold text-white mb-2">{snippet.title}</h1>
       <div className="flex items-center gap-2 text-sm text-gray-400 mb-4">
         <Icons.Programming size={16} />
@@ -114,6 +114,11 @@ function PublicSnippetPage() {
             <code>{snippet.code}</code>
           </pre>
         </div>
+      </div>
+      <div className="mt-10 flex items-center justify-center">
+        <Link href="/" className="font-semibold text-sm text-center">
+          Dropp
+        </Link>
       </div>
     </div>
   );
