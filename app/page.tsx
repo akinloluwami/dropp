@@ -8,7 +8,7 @@ const Home = () => {
     <div className="p-10 flex items-center justify-center">
       <div className="bg-[#0f0f0f] max-w-7xl h-[calc(100vh-80px)] w-full mx-auto flex flex-col p-5 rounded-2xl border border-gray-50/5 gap-y-10 relative overflow-hidden">
         <FlickeringGrid
-          className="absolute inset-0 z-0 size-full opacity-5"
+          className="absolute inset-0 z-0 size-full opacity-30"
           squareSize={4}
           gridGap={6}
           color="#6B7280"
