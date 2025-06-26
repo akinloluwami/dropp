@@ -20,6 +20,11 @@ const Sidebar: React.FC<SidebarProps> = ({ open = false, onClose }) => {
       href: "/dashboard/snippets",
       icon: Icons.Programming,
     },
+    {
+      label: "Collections",
+      href: "/dashboard/collections",
+      icon: Icons.Folder,
+    },
   ];
 
   const pathname = usePathname();
