@@ -50,18 +50,20 @@ export const SnippetCard: React.FC<SnippetCardProps> = ({ snippet }) => {
           <span className="text-lg font-medium text-white line-clamp-1 flex-1">
             {snippet.title}
           </span>
-          <span className="ml-0 xs:ml-2 text-xs font-mono bg-gray-700 text-gray-200 px-2 py-0.5 rounded">
-            {snippet.short_code}
-          </span>
-          {snippet.is_public ? (
-            <span className="flex items-center gap-1 text-xs text-green-400 bg-green-400/10 px-2 py-0.5 rounded">
-              <Icons.Lock size={14} className="text-green-400" /> Public
+          <div className="flex items-center gap-x-2">
+            <span className="font-mono bg-white/10 hover:bg-white/15 transition-colors text-gray-200 px-1 py-0.5 rounded text-xs">
+              {snippet.short_code}
             </span>
-          ) : (
-            <span className="flex items-center gap-1 text-xs text-gray-400 bg-gray-400/10 px-2 py-0.5 rounded">
-              <Icons.Lock size={14} /> Private
-            </span>
-          )}
+            {snippet.is_public ? (
+              <span className="flex items-center gap-1 text-xs text-green-400 bg-green-400/10 px-2 py-0.5 rounded">
+                <Icons.Lock size={14} className="text-green-400" /> Public
+              </span>
+            ) : (
+              <span className="flex items-center gap-1 text-xs text-gray-400 bg-gray-400/10 px-2 py-0.5 rounded">
+                <Icons.Lock size={14} /> Private
+              </span>
+            )}
+          </div>
         </div>
         <div className="flex flex-wrap items-center gap-2 text-xs text-gray-400 mb-1">
           <Icons.Programming size={14} />
@@ -70,12 +72,14 @@ export const SnippetCard: React.FC<SnippetCardProps> = ({ snippet }) => {
           <Icons.Calendar size={14} />
           <span>{formatDate(snippet.createdAt)}</span>
         </div>
-        {snippet.description && (
-          <div className="text-sm text-gray-300 line-clamp-2 mb-1">
-            {snippet.description}
-          </div>
-        )}
-        <pre className="bg-black/30 rounded-lg p-3 text-xs text-white/80 font-mono max-h-32 overflow-auto mt-1 break-words">
+        <div className="h-3 flex items-center">
+          {snippet.description && (
+            <div className="text-sm text-gray-300 line-clamp-2 mb-1 truncate">
+              {snippet.description}
+            </div>
+          )}
+        </div>
+        <pre className="bg-black/30 h-full rounded-lg p-3 text-xs text-white/80 font-mono max-h-32 overflow-auto mt-1 break-words">
           {snippet.code.slice(0, 200)}
           {snippet.code.length > 200 ? "..." : ""}
         </pre>
