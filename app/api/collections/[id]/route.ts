@@ -73,3 +73,49 @@ export async function DELETE(
     );
   }
 }
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const user = await requireAuth();
+    const { id } = await params;
+    const body = await request.json();
+
+    const collections = await db.collections.find({ filter: { _id: id } });
+    if (collections.length === 0) {
+      return NextResponse.json(
+        { error: "Collection not found" },
+        { status: 404 }
+      );
+    }
+    const collection = collections[0];
+    if (collection.user_id !== user.id) {
+      return NextResponse.json({ error: "Access denied" }, { status: 403 });
+    }
+
+    const { name, description } = body;
+    if (!name) {
+      return NextResponse.json({ error: "Name is required" }, { status: 400 });
+    }
+
+    const updatedCollection = await db.collections.update(id, {
+      name,
+      description,
+    });
+
+    return NextResponse.json({ collection: updatedCollection });
+  } catch (error) {
+    if (error instanceof Error && error.message === "Authentication required") {
+      return NextResponse.json(
+        { error: "Authentication required" },
+        { status: 401 }
+      );
+    }
+    return NextResponse.json(
+      { error: "Failed to update collection" },
+      { status: 500 }
+    );
+  }
+}
