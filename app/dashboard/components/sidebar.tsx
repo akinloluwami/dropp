@@ -41,7 +41,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open = false, onClose }) => {
                 href={link.href}
                 key={link.href}
                 className={`flex items-center gap-x-2 p-2 rounded-lg hover:bg-gray-50/5 transition-colors ${
-                  pathname === link.href
+                  pathname.startsWith(link.href)
                     ? "bg-gray-50/5 text-white"
                     : "text-gray-400 hover:text-white"
                 }`}
@@ -86,7 +86,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open = false, onClose }) => {
                   href={link.href}
                   key={link.href}
                   className={`flex items-center gap-x-2 p-2 rounded-lg hover:bg-gray-50/5 transition-colors ${
-                    pathname === link.href
+                    pathname.startsWith(link.href)
                       ? "bg-gray-50/5 text-white"
                       : "text-gray-400 hover:text-white"
                   }`}
